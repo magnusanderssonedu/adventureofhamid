@@ -12,10 +12,11 @@ pygame.display.set_caption("Adventure boardgame")
 key_down = False
 
 def id_keys():
-    keys = pygame.key.get_pressed()
-    available_keys = (pygame.K_1,pygame.K_2,pygame.K_3,pygame.K_4,pygame.K_5,pygame.K_6)    #Place available keys in tuple
+    keys = pygame.key.get_pressed() #tuple with all keys represented as 0 or 1 with 1 for pressed
+    available_keys = (pygame.K_1,pygame.K_2,pygame.K_3,pygame.K_4,pygame.K_5,pygame.K_6)    #Place available keys in tuple; represents index of keys
     for key in available_keys:
-        if keys[key]: return available_keys.index(key)
+        if keys[key]:
+            return available_keys.index(key) #return between 0-5 depending on key pressed
     return -1
 
 def key_diff(cur,pres): #returns difference between two keys using the key-tuple
@@ -41,7 +42,7 @@ while run:  #main loop
             run = False
         if event.type == pygame.KEYDOWN:    #handeling key event
             if not key_down:    #the player token will be constantly triggering this event, so just check if the token is moved to save time
-                pressed_key = id_keys()
+                pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
                 if pressed_key >= 0:
                     key_down = True
                     move = (0,0)

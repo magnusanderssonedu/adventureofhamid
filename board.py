@@ -30,9 +30,10 @@ class Board:
         return self.boardcoords
 
     def is_validmove(self,movecoords, playercoords):
-        #movecoords is a tuple like (x,y)
+        #movecoords is a tuple like (x,y) pointing out direction, eg (1, 0) moving right, (-1, 0) moving left
+        #playercoords is tuple like (x,y) of players current tile
         move = False
-        if not (movecoords[0] == 0 and movecoords[1] == 0):
+        if not (movecoords[0] == 0 and movecoords[1] == 0): # movecoords(0,0) would mean no move at all.
             move = True
             #check for moves resulting in player outside screen
             if movecoords[0] < 0 and movecoords[0]+playercoords[0] < self.minmove[0]:    #moving past left border is False move
@@ -43,5 +44,4 @@ class Board:
                 move = False
             if movecoords[1] > 0 and movecoords[1]+playercoords[1] > self.maxmove[1]:    #moving past bottom border is False move
                 move = False
-        
         return move

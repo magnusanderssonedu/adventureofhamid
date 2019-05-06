@@ -19,6 +19,7 @@ class Player:
         self.move(coords)
 
     def move(self,movecords):
+        """Sätter relx, rely (koordinaterna) samt x, y som är pixlarna"""
         self.relx = self.relx + movecords[0]
         self.x = self.velx*self.relx
         self.rely = self.rely + movecords[1]
