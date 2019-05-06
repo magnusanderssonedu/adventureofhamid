@@ -4,12 +4,12 @@ import os
 class Board:
     current_tile = 0
     #board = pygame.image.load(os.path.join('data', 'board.png'))
-    board = pygame.image.load(os.path.join('data', 'board2.png')) #alternative board
+    board = pygame.image.load(os.path.join('data', 'boardcobbled2.png')) #alternative board
     boardcoords = (1,1)
     minmove = (0,0) #top left corner
-    maxmove = (15,10) # bottom right corner
+    maxmove = (5,5) # bottom right corner - (15,10) originally
 
-    def __init__(self, tile = 0, minmove = (0,0), maxmove = (15,10)):
+    def __init__(self, tile = 0, minmove = (0,0), maxmove = (5,5)):
         if (tile >=0 and tile <=5):
             self.current_tile = tile
         else:
@@ -33,7 +33,7 @@ class Board:
         #movecoords is a tuple like (x,y) pointing out direction, eg (1, 0) moving right, (-1, 0) moving left
         #playercoords is tuple like (x,y) of players current tile
         move = False
-        if not (movecoords[0] == 0 and movecoords[1] == 0): # movecoords(0,0) would mean no move at all.
+        if not (movecoords[0] == 0 and movecoords[1] == 0): # movecoords(0,0) means no move at all.
             move = True
             #check for moves resulting in player outside screen
             if movecoords[0] < 0 and movecoords[0]+playercoords[0] < self.minmove[0]:    #moving past left border is False move

@@ -9,8 +9,8 @@ class Player:
     rely = 0
     width = 34 #width and height of player image on screen (was originally 34)
     height = 34 # (was originally 34)
-    velx = 140  #width+borderwidth (was originally 35)
-    vely = 140  #height+borderheight (was originally 35)
+    velx = 105  #width+borderwidth (was originally 35)
+    vely = 105  #height+borderheight (was originally 35)
     me = pygame.image.load(os.path.join('data', 'player.png'))
 
     def __init__(self,coords=(0,0)):
@@ -19,13 +19,13 @@ class Player:
         self.move(coords)
 
     def move(self,movecords):
-        """Sätter relx, rely (koordinaterna) samt x, y som är pixlarna"""
-        setCoord = lambda r,v: 35 if r == 0 else r * v
+        """Sätter relx, rely (koordinaterna) samt x, y som är analet pixlar"""
+        # setCoord = lambda r,v: 35 if r == 0 else r * v
 
         self.relx = self.relx + movecords[0]
-        self.x = setCoord(self.relx, self.velx)
+        self.x = self.relx * self.velx + 35
         self.rely = self.rely + movecords[1]
-        self.y = setCoord(self.rely, self.vely)
+        self.y = self.rely * self.vely + 35
 
 
 
