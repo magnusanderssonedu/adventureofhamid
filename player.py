@@ -20,29 +20,20 @@ class Player:
 
     def move(self,movecords):
         """Sätter relx, rely (koordinaterna) samt x, y som är pixlarna"""
-        
-        # make move according to direction coordinates: movecords
+        setCoord = lambda r,v: 35 if r == 0 else r * v
+
         self.relx = self.relx + movecords[0]
+        self.x = setCoord(self.relx, self.velx)
         self.rely = self.rely + movecords[1]
+        self.y = setCoord(self.rely, self.vely)
 
-        if self.relx == 0:
-            self.relx = self.relx + movecords[0]
-            self.x = 35
-        else:
-            self.x = self.velx*self.relx
-
-        if self.rely == 0:
-            self.y = 35
-        else:
-            self.y = self.vely*self.rely
-        
 
 
         # self.relx = self.relx + movecords[0]
         # self.x = self.velx*self.relx
         # self.rely = self.rely + movecords[1]
         # self.y = self.vely*self.rely
-        print("relx: {}, x: {}".format(self.relx, self.x))
+        # print("relx: {}, x: {}".format(self.relx, self.x))
 
     def draw(self):
         return self.me
