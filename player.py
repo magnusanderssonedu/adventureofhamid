@@ -19,21 +19,16 @@ class Player:
         self.move(coords)
 
     def move(self,movecords):
-        """Sätter relx, rely (koordinaterna) samt x, y som är analet pixlar"""
-        # setCoord = lambda r,v: 35 if r == 0 else r * v
-
+        """Sätter relx, rely (koordinaterna) samt x, y som är antalet pixlar"""
         self.relx = self.relx + movecords[0]
         self.x = self.relx * self.velx + 35
         self.rely = self.rely + movecords[1]
         self.y = self.rely * self.vely + 35
 
-
-
         # self.relx = self.relx + movecords[0]
         # self.x = self.velx*self.relx
         # self.rely = self.rely + movecords[1]
         # self.y = self.vely*self.rely
-        # print("relx: {}, x: {}".format(self.relx, self.x))
 
     def draw(self):
         return self.me
