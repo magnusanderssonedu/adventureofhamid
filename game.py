@@ -79,5 +79,3 @@ while run:  #main loop
     pygame.display.update()
 
 pygame.quit()
-
-
