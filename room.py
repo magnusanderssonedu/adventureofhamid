@@ -1,26 +1,34 @@
 from tile import Tile
 class Room:
-    tile = {}
-    def __init__(self, room_id, entering_from):
+    tile_holder = []
+    def __init__(self, room_id):
         self.room_id = room_id
-        self.enterRoom(entering_from)
+        self.tile_holder = []
 
     def enterRoom(self, entering_from):
-        if self.hasTile():
-            tile = self.getTile()
-        else:
+        if not self.hasTile():
             self.putTile(self.room_id, entering_from)
 
     def putTile(self, room_id, entering_from):
         """tile id is same as roomcoordinate"""
-        self.tile = Tile(room_id, entering_from)
-        print("self.tile", self.tile)
+        new_tile = Tile(room_id, entering_from)
+        self.tile_holder.append(new_tile)
 
     def hasTile(self):
-        return len(self.tile) > 0
+        return len(self.tile_holder) > 0
 
     def getTile(self):
-        return self.tile
+        return self.tile_holder[0]
 
     def getMob(self):
         pass
+
+    def get_exits(self):
+        """
+        Is called from game to get this rooms exits.
+        """
+        exits = ''
+        for key, value in self.tile_holder[0].exits.items():
+            if value == 1:
+                exits += key + ' '
+        return exits

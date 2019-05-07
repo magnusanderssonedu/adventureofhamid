@@ -34,6 +34,7 @@ theStatusContent.append(StatusContent(text="HP=100", size=24, coords=(650,20)))
 theStatusContent.append(StatusContent(text="Steps=4", size=24, coords=(650,50)))
 theStatusContent.append(StatusContent(text="Throw die", size=24, coords=(650,80)))
 theStatusContent.append(StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)))
+theStatusContent.append(StatusContent(text="Exits: e s", size=24, coords=(650, 250)))
 run = True
 
 while run:  #main loop
@@ -66,6 +67,7 @@ while run:  #main loop
                             theStatusContent[3].set_text("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
                             theBoard.set_current_tile(pressed_key)
                             theBoard.enter_room(thePlayer.relcoords(), entering_from)
+                            theStatusContent[4].set_text(theBoard.room_exits(thePlayer.relcoords()))
                                         
         if event.type == pygame.KEYUP:
             key_down = False    #key up means player token is moved

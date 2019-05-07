@@ -32,21 +32,29 @@ class Board:
         return self.boardcoords
 
     def enter_room(self, room_id, entering_from):
-        x, y = room_id
-        room_index = str(x) + str(y)
+        """
+        Is called from game to enter new or old room
+        room_id:tuple
+        entering_from:String 'n', 'e', 's' or 'w'
+        """
+        room_index = self.getRoomIndex(room_id)
 
         if room_index in self.rooms:
             room = self.rooms[room_index]
-            print("set_room:", room)
-            print("old tile is:", room.getTile())
+            room.enterRoom(entering_from)
         else:
-            room = Room(room_id, entering_from)
+            room = Room(room_id)
+            room.enterRoom(entering_from)
             self.rooms[room_index] = room
-            print("set_room:", room)
-        print("self.rooms:", self.rooms)
 
-    def get_room_info(self, room_id):
-        pass
+    def room_exits(self, room_id):
+        """
+        Is called from game to get this rooms exits.
+        room_id:tuple
+        """
+        room_index = self.getRoomIndex(room_id)
+        return self.rooms[room_index].get_exits()
+
     def is_validmove(self,movecoords, playercoords):
         #movecoords is a tuple like (x,y) pointing out direction, eg (1, 0) moving right, (-1, 0) moving left
         #playercoords is tuple like (x,y) of players current tile
@@ -63,3 +71,8 @@ class Board:
             if movecoords[1] > 0 and movecoords[1]+playercoords[1] > self.maxmove[1]:    #moving past bottom border is False move
                 move = False
         return move
+    
+    def getRoomIndex(self, room_id):
+        x, y = room_id
+        room_index = str(x) + str(y)
+        return room_index
