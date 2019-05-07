@@ -5,7 +5,7 @@ from status import Status, StatusContent
 
 pygame.init()
 
-win = pygame.display.set_mode((1050,525))
+win = pygame.display.set_mode((830,630))
 pygame.display.set_caption("Adventure boardgame")
         
 #main variables
@@ -26,13 +26,14 @@ def postuple(i):    #returns specific key from tuple
     return (1,2,3,4,5,6)[i]
     
 thePlayer = Player()
-theBoard = Board(maxmove=(22,14))
-theStatus = Status((804,0),(246,525),(0,0,0))
+theBoard = Board()
+# theStatus = Status((804,0),(246,630),(0,0,0))
+theStatus = Status((630,0),(830,630),(0,0,0))
 theStatusContent = []
-theStatusContent.append(StatusContent(text="HP=100", size=24, coords=(810,20)))
-theStatusContent.append(StatusContent(text="Steps=4", size=24, coords=(810,50)))
-theStatusContent.append(StatusContent(text="Throw die", size=24, coords=(810,80)))
-theStatusContent.append(StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(810,200)))
+theStatusContent.append(StatusContent(text="HP=100", size=24, coords=(650,20)))
+theStatusContent.append(StatusContent(text="Steps=4", size=24, coords=(650,50)))
+theStatusContent.append(StatusContent(text="Throw die", size=24, coords=(650,80)))
+theStatusContent.append(StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)))
 run = True
 
 while run:  #main loop
