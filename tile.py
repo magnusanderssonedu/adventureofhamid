@@ -9,7 +9,7 @@ class Tile:
         'w': 0
     }
     def __init__(self, tile_id, entering_from):
-        """tile id is same as room coordiante. entering from is string 'n', 'e', 's' or 'w'"""
+        """tile id is same as room coord: tuple. entering_from is string 'n', 'e', 's' or 'w'"""
 
         # Checking valid entering_from value
         assert entering_from == "n" or entering_from == 'e' or entering_from == 's' or entering_from == 'w'
@@ -21,7 +21,12 @@ class Tile:
         """generate values for every exit. 0 for no exit and 1 for exit"""
         for key in self.exits.keys():
             exitvalue = random.randint(0, 1)
-            exits[key] = exitvalue
+            if key != entering_from:
+                self.exits[key] = exitvalue
+            else:
+                self.exits[entering_from] = 1
+        for key, value in self.exits.items():
+            print(key, value)
 
     def generateTile(self):
         pass

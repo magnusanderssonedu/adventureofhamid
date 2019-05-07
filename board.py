@@ -1,5 +1,6 @@
 import pygame
 import os
+from room import Room
 
 class Board:
     current_tile = 0
@@ -8,6 +9,7 @@ class Board:
     boardcoords = (1,1)
     minmove = (0,0) #top left corner
     maxmove = (5,5) # bottom right corner - (15,10) originally
+    rooms = {}
 
     def __init__(self, tile = 0, minmove = (0,0), maxmove = (5,5)):
         if (tile >=0 and tile <=5):
@@ -29,6 +31,22 @@ class Board:
     def coords(self):
         return self.boardcoords
 
+    def enter_room(self, room_id, entering_from):
+        x, y = room_id
+        room_index = str(x) + str(y)
+
+        if room_index in self.rooms:
+            room = self.rooms[room_index]
+            print("set_room:", room)
+            print("old tile is:", room.getTile())
+        else:
+            room = Room(room_id, entering_from)
+            self.rooms[room_index] = room
+            print("set_room:", room)
+        print("self.rooms:", self.rooms)
+
+    def get_room_info(self, room_id):
+        pass
     def is_validmove(self,movecoords, playercoords):
         #movecoords is a tuple like (x,y) pointing out direction, eg (1, 0) moving right, (-1, 0) moving left
         #playercoords is tuple like (x,y) of players current tile
