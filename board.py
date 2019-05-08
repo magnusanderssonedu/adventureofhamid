@@ -36,20 +36,19 @@ class Board:
     def coords(self):
         return self.boardcoords
 
-    def enter_room(self, room_id, entering_from):
+    def enter_room(self, room_id):
         """
         Is called from game to enter new or old room
         room_id:tuple
-        entering_from:String 'n', 'e', 's' or 'w'
         """
         room_index = self.getRoomIndex(room_id)
-
+        neigbouring_rooms = self.getNeigbouringRooms(room_id) # list with tuples eg [('n', 1), ('s', 0)]
         if room_index in self.rooms:
             room = self.rooms[room_index]
-            room.enterRoom(entering_from)
+            room.enterRoom()
         else:
-            room = Room(room_id)
-            room.enterRoom(entering_from)
+            room = Room(room_id, neigbouring_rooms)
+            room.enterRoom()
             self.rooms[room_index] = room
             self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getTileImage()))
 
@@ -84,6 +83,38 @@ class Board:
                 move = False
         return move
     
+    def getNeigbouringRooms(self, room_id):
+        """
+        Check if existing neigbours to room with room_id has doors leading to if
+        room_id:tuple (int x, int y)
+        returns neigbouring_doors:list with tuples eg [('n', 1), ('s', 0)] for north neighbour door and south neighbour no door
+        """
+        neigbouring_rooms = []
+        thisx, thisy = room_id
+
+        # neigbouring room_indexes: dict = {neigbour direction = (room index, direction to check from that room), ...}
+        neigbouring_rooms_indexes = {
+            'n': (self.getRoomIndex((thisx, thisy-1)), 's'), 
+            'e': (self.getRoomIndex((thisx + 1, thisy)), 'w'),
+            's': (self.getRoomIndex((thisx,thisy + 1)),'n'),
+            'w': (self.getRoomIndex((thisx - 1, thisy)), 'e')
+            }
+
+        for key, value in neigbouring_rooms_indexes.items():
+            index = value[0]
+            exit = value[1]
+            if index in self.rooms:
+                if self.rooms[index].tile_holder[0].exits[exit] == 1:
+                    neigbouring_rooms.append((key, 1))
+                else:
+                    neigbouring_rooms.append((key, 0))
+            
+        return neigbouring_rooms
+
+
+
+
+
     def getRoomIndex(self, room_id):
         x, y = room_id
         room_index = str(x) + str(y)

@@ -29,7 +29,7 @@ thePlayer = Player()
 theBoard = Board()
 
 # Entering first room and setting tile
-theBoard.enter_room(thePlayer.relcoords(), 'e')
+theBoard.enter_room(thePlayer.relcoords())
 
 
 # theStatus = Status((804,0),(246,630),(0,0,0))
@@ -57,21 +57,17 @@ while run:  #main loop
                         #check for the difference between last key and pressed key
                         if key_diff(theBoard.get_current_tile(),pressed_key) == -1 or key_diff(theBoard.get_current_tile(),pressed_key) == 5: #moved_right
                             move=(1,0)
-                            entering_from = 'w'
                         if key_diff(theBoard.get_current_tile(),pressed_key) == 1 or key_diff(theBoard.get_current_tile(),pressed_key) == -5:  #moved_left
                             move=(-1,0)
-                            entering_from = 'e'
                         if key_diff(theBoard.get_current_tile(),pressed_key) == -2 or key_diff(theBoard.get_current_tile(),pressed_key) == 4:  #moved_down
                             move=(0,1)
-                            entering_from = 'n'
                         if key_diff(theBoard.get_current_tile(),pressed_key) == 2 or key_diff(theBoard.get_current_tile(),pressed_key) == -4:  #moved_up
                             move=(0,-1)
-                            entering_from = 's'
                         if theBoard.is_validmove(move, thePlayer.relcoords()):
                             thePlayer.move(move)
                             theStatusContent[3].set_text("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
                             theBoard.set_current_tile(pressed_key)
-                            theBoard.enter_room(thePlayer.relcoords(), entering_from)
+                            theBoard.enter_room(thePlayer.relcoords())
                             theStatusContent[4].set_text("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
                                         
         if event.type == pygame.KEYUP:

@@ -2,17 +2,20 @@ from tile import Tile
 class Room:
     tile_holder = []
     room_id = (-1,-1)
-    def __init__(self, room_id):
+    neigbouring_rooms = []
+    def __init__(self, room_id, neigbouring_rooms):
         self.room_id = room_id
         self.tile_holder = []
+        self.neigbouring_rooms = neigbouring_rooms
 
-    def enterRoom(self, entering_from):
+    def enterRoom(self):
         if not self.hasTile():
-            self.putTile(self.room_id, entering_from)
+            self.putTile(self.room_id)
 
-    def putTile(self, room_id, entering_from):
+    def putTile(self, room_id):
         """tile id is same as roomcoordinate"""
-        new_tile = Tile(room_id, entering_from)
+        # print(self.neigbouring_rooms)
+        new_tile = Tile(room_id, self.neigbouring_rooms)
         self.tile_holder.append(new_tile)
 
     def hasTile(self):
@@ -54,3 +57,4 @@ class Room:
             valid_move = True
         
         return valid_move
+    
