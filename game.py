@@ -99,7 +99,7 @@ while run:  #main loop
             key_down = False    #key up means player token is moved
 
     win.fill((0,0,0))
-    #win.blit(theBoard.draw(), theBoard.coords())
+    win.blit(theBoard.draw(), theBoard.coords())
     # bliting tiles
     for t in theBoard.getTiles():
         win.blit(t[2], t[0])
