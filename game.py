@@ -77,6 +77,7 @@ while run:  #main loop
     win.blit(theBoard.draw(), theBoard.coords())
     # bliting tiles
     for t in theBoard.getTiles():
+        win.blit(t[2], t[0])
         win.blit(t[1], t[0])
     win.blit(thePlayer.draw(), thePlayer.coords())
     theStatus.draw(win)

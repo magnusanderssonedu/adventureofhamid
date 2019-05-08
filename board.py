@@ -10,7 +10,7 @@ class Board:
     minmove = (0,0) #top left corner
     maxmove = (5,5) # bottom right corner - (15,10) originally
     rooms = {} # rooms visited on the board
-    tiles = [] # list with tuples with this boards all tile_images and corresponding coordinates [(coord, tileimage.png), ...]
+    tiles = [] # list with tuples with this boards all tile_images and corresponding coordinates [(coord, tileimage.png, floorimage.png), ...]
     velx = 105 # pixels per coord in room_id
     vely = 105 # pixels per coord in room_id
 
@@ -50,7 +50,7 @@ class Board:
             room = Room(room_id, neigbouring_rooms)
             room.enterRoom()
             self.rooms[room_index] = room
-            self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getTileImage()))
+            self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getTileImage(), room.getTileFloor()))
 
     def getTiles(self):
         return self.tiles

@@ -30,6 +30,9 @@ class Room:
     def getTileImage(self):
         return self.tile_holder[0].getTileImage()
 
+    def getTileFloor(self):
+        return self.tile_holder[0].getTileFloor()
+
     def get_exits(self):
         """
         Is called from game to get this rooms exits.

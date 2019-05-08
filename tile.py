@@ -85,6 +85,9 @@ class Tile:
     def getTileImage(self):
         return pygame.image.load(os.path.join('data', self.tile_image))
 
+    def getTileFloor(self):
+        return pygame.image.load(os.path.join('data', 'tile_stone_1.png'))
+
     def generateTile(self):
         pass
     def getTileExits(self, id):
