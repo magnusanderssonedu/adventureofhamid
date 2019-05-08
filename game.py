@@ -27,6 +27,11 @@ def postuple(i):    #returns specific key from tuple
     
 thePlayer = Player()
 theBoard = Board()
+
+# Entering first room and setting tile
+theBoard.enter_room(thePlayer.relcoords(), 'e')
+
+
 # theStatus = Status((804,0),(246,630),(0,0,0))
 theStatus = Status((630,0),(830,630),(0,0,0))
 theStatusContent = []
@@ -34,6 +39,7 @@ theStatusContent.append(StatusContent(text="HP=100", size=24, coords=(650,20)))
 theStatusContent.append(StatusContent(text="Steps=4", size=24, coords=(650,50)))
 theStatusContent.append(StatusContent(text="Throw die", size=24, coords=(650,80)))
 theStatusContent.append(StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)))
+theStatusContent.append(StatusContent(text="Exits: e s", size=24, coords=(650, 250)))
 run = True
 
 while run:  #main loop
@@ -51,22 +57,31 @@ while run:  #main loop
                         #check for the difference between last key and pressed key
                         if key_diff(theBoard.get_current_tile(),pressed_key) == -1 or key_diff(theBoard.get_current_tile(),pressed_key) == 5: #moved_right
                             move=(1,0)
+                            entering_from = 'w'
                         if key_diff(theBoard.get_current_tile(),pressed_key) == 1 or key_diff(theBoard.get_current_tile(),pressed_key) == -5:  #moved_left
-                            move=(-1,0)    
+                            move=(-1,0)
+                            entering_from = 'e'
                         if key_diff(theBoard.get_current_tile(),pressed_key) == -2 or key_diff(theBoard.get_current_tile(),pressed_key) == 4:  #moved_down
                             move=(0,1)
+                            entering_from = 'n'
                         if key_diff(theBoard.get_current_tile(),pressed_key) == 2 or key_diff(theBoard.get_current_tile(),pressed_key) == -4:  #moved_up
                             move=(0,-1)
+                            entering_from = 's'
                         if theBoard.is_validmove(move, thePlayer.relcoords()):
                             thePlayer.move(move)
                             theStatusContent[3].set_text("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
                             theBoard.set_current_tile(pressed_key)
+                            theBoard.enter_room(thePlayer.relcoords(), entering_from)
+                            theStatusContent[4].set_text("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
                                         
         if event.type == pygame.KEYUP:
             key_down = False    #key up means player token is moved
     
     win.fill((0,0,0))
     win.blit(theBoard.draw(), theBoard.coords())
+    # bliting tiles
+    for t in theBoard.getTiles():
+        win.blit(t[1], t[0])
     win.blit(thePlayer.draw(), thePlayer.coords())
     theStatus.draw(win)
     for draw_text in theStatusContent:
@@ -74,5 +89,3 @@ while run:  #main loop
     pygame.display.update()
 
 pygame.quit()
-
-
