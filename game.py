@@ -27,6 +27,11 @@ def postuple(i):    #returns specific key from tuple
     
 thePlayer = Player()
 theBoard = Board()
+
+# Entering first room and setting tile
+theBoard.enter_room(thePlayer.relcoords(), 'e')
+
+
 # theStatus = Status((804,0),(246,630),(0,0,0))
 theStatus = Status((630,0),(830,630),(0,0,0))
 theStatusContent = []
@@ -67,13 +72,16 @@ while run:  #main loop
                             theStatusContent[3].set_text("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
                             theBoard.set_current_tile(pressed_key)
                             theBoard.enter_room(thePlayer.relcoords(), entering_from)
-                            theStatusContent[4].set_text(theBoard.room_exits(thePlayer.relcoords()))
+                            theStatusContent[4].set_text("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
                                         
         if event.type == pygame.KEYUP:
             key_down = False    #key up means player token is moved
     
     win.fill((0,0,0))
     win.blit(theBoard.draw(), theBoard.coords())
+    # bliting tiles
+    for t in theBoard.getTiles():
+        win.blit(t[1], t[0])
     win.blit(thePlayer.draw(), thePlayer.coords())
     theStatus.draw(win)
     for draw_text in theStatusContent:

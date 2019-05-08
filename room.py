@@ -1,6 +1,7 @@
 from tile import Tile
 class Room:
     tile_holder = []
+    room_id = (-1,-1)
     def __init__(self, room_id):
         self.room_id = room_id
         self.tile_holder = []
@@ -22,6 +23,9 @@ class Room:
 
     def getMob(self):
         pass
+    
+    def getTileImage(self):
+        return self.tile_holder[0].getTileImage()
 
     def get_exits(self):
         """
@@ -32,3 +36,21 @@ class Room:
             if value == 1:
                 exits += key + ' '
         return exits
+
+    def isValidMove(self, movecoords):
+        """
+        checks and returns True or False if moving from this room to movecoords is a valid move
+        movecoords:tuple where (1, 0) moving right, (-1, 0) moving left, (0, 1) moving down, (0, -1) moving up
+        """
+        valid_move = False
+        exits = self.tile_holder[0].exits # dictionary with this tiles exits
+        if movecoords == (1, 0) and exits['e'] == 1:
+            valid_move = True
+        elif movecoords == (-1, 0) and exits['w'] == 1:
+            valid_move = True
+        elif movecoords == (0, 1) and exits['s'] == 1:
+            valid_move = True
+        elif movecoords == (0, -1) and exits['n'] == 1:
+            valid_move = True
+        
+        return valid_move
