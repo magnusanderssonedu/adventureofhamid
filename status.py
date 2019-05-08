@@ -1,17 +1,25 @@
 import pygame
+import os
 
 class Status:
-    coords = (0,0)
+    statuscoords = (0,0)
     dimensions = (0,0)
     bgcolor = (0,0,0)
+    me = pygame.image.load(os.path.join('data', 'statusbar.png'))
 
-    def __init__(self, coords=(300,0), dimensions=(100,200), bgcolor=(0,0,0)):
-        self.coords = coords
+    def __init__(self, statuscoords=(300,0), dimensions=(100,200), bgcolor=(0,0,0)):
+        self.statuscoords = statuscoords
         self.dimensions = dimensions
         self.bgcolor = bgcolor
 
-    def draw(self, surface):
-        pygame.draw.rect(surface, self.bgcolor, [self.coords[0],self.coords[1],self.dimensions[0],self.dimensions[1]])
+    #def draw(self, win):   //Sparar denna så länge
+        #pygame.draw.rect(surface, self.bgcolor, [self.coords[0],self.coords[1],self.dimensions[0],self.dimensions[1]])
+
+    def draw(self):
+        return self.me
+
+    def coords(self):
+        return (self.statuscoords[0],self.statuscoords[1])
 
 
 class StatusContent:
@@ -41,3 +49,29 @@ class StatusContent:
 
     def set_text(self,text):
         self.text = text
+
+class StatusContentBar:
+    dimensions = (180,20)
+    coords = (600,20)
+    bgcolor = (0,0,0)
+    color = (255,0,0)
+    value = 1.0
+
+    def __init__(self, dimensions = (180,20),coords = (600,20),bgcolor = (0,0,0),color = (255,0,0),value=1.0):
+        self.dimensions = dimensions
+        self.coords = coords
+        self.bgcolor = bgcolor
+        self.color = color
+        self.value = value
+
+    def setValue(self,val):
+        self.value = val
+
+    def setColor(self,color):
+        self.color = color
+
+    def draw(self, win):
+        #draw background
+        pygame.draw.rect(win, self.bgcolor, [self.coords[0],self.coords[1],self.dimensions[0],self.dimensions[1]])
+        #draw foreground
+        pygame.draw.rect(win, self.color, [self.coords[0]+1,self.coords[1]+1,self.value*(self.dimensions[0]-2),self.dimensions[1]-2])

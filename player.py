@@ -11,6 +11,7 @@ class Player:
     height = 34 # (was originally 34)
     velx = 105  #width+borderwidth (was originally 35)
     vely = 105  #height+borderheight (was originally 35)
+    hp = 100.0
     me = pygame.image.load(os.path.join('data', 'player.png'))
 
     def __init__(self,coords=(0,0)):
@@ -32,6 +33,14 @@ class Player:
 
     def draw(self):
         return self.me
+
+    def setHP(self, newhp):
+        self.hp = newhp
+        if self.hp < 0:
+            self.hp = 0
+
+    def getHP(self):
+        return self.hp
 
     def coords(self):
         return (self.x,self.y)
