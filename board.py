@@ -5,7 +5,7 @@ from room import Room
 class Board:
     current_tile = 0
     #board = pygame.image.load(os.path.join('data', 'board.png'))
-    board = pygame.image.load(os.path.join('data', 'boardcobbled2.png')) #alternative board
+    board = pygame.image.load(os.path.join('data', 'boardcobbled6.png')) #alternative board
     boardcoords = (1,1)
     minmove = (0,0) #top left corner
     maxmove = (5,5) # bottom right corner - (15,10) originally
