@@ -13,7 +13,9 @@ class Tile:
     }
     tile_walls = "walls_"
     neigbouring_rooms = []
-    def __init__(self, tile_id, neigbouring_rooms):
+    
+    tile_floor = ""
+    def __init__(self, tile_id, neigbouring_rooms, tile_floor):
         """
         tile_id: tuple is same as room coord
         """
@@ -32,6 +34,7 @@ class Tile:
             's': 0,
             'w': 0
         }
+        self.tile_floor = tile_floor
         self.generateExits()
         self.generateTileWalls()
 
@@ -87,4 +90,4 @@ class Tile:
         return pygame.image.load(os.path.join('data', self.tile_walls))
 
     def getTileFloor(self):
-        return pygame.image.load(os.path.join('data', 'tile_stone_1.png'))
+        return pygame.image.load(os.path.join('data/tile_floors', self.tile_floor))

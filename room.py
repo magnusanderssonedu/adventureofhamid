@@ -3,9 +3,11 @@ class Room:
     tile_holder = []
     room_id = (-1,-1)
     neigbouring_rooms = []
-    def __init__(self, room_id, neigbouring_rooms):
+    tile_floor = ""
+    def __init__(self, room_id, neigbouring_rooms, tile_floor):
         self.room_id = room_id
         self.tile_holder = []
+        self.tile_floor = tile_floor
         self.neigbouring_rooms = neigbouring_rooms
 
     def enterRoom(self):
@@ -15,7 +17,7 @@ class Room:
     def putTile(self):
         """tile id is same as roomcoordinate"""
         # print(self.neigbouring_rooms)
-        new_tile = Tile(self.room_id, self.neigbouring_rooms)
+        new_tile = Tile(self.room_id, self.neigbouring_rooms, self.tile_floor)
         self.tile_holder.append(new_tile)
 
     def hasTile(self):
