@@ -26,7 +26,6 @@ class Board:
         self.maxmove = maxmove
         random.shuffle(floors)
         self.tile_floors = floors
-        print(self.tile_floors)
         self.tiles = []
 
     def get_current_tile(self):
