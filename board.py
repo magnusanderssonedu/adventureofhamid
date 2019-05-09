@@ -92,6 +92,20 @@ class Board:
         neigbouring_rooms = []
         thisx, thisy = room_id
 
+        outofborder = [] # will be filled with directions that is out of game board one step away from this room
+        if thisx + 1 > self.maxmove[0]:
+            # the room to the right is out of the game board
+            outofborder.append('e')
+        if thisx - 1 < self.minmove[0]:
+            # the room to the left is out of the game board
+            outofborder.append('w')
+        if thisy + 1 > self.maxmove[1]:
+            # the room downwards is out of the game board
+            outofborder.append('s')
+        if thisy - 1 < self.minmove[1]:
+            # the room upwards is out of the game board
+            outofborder.append('n')
+
         # neigbouring room_indexes: dict = {neigbour direction = (room index, direction to check from that room), ...}
         neigbouring_rooms_indexes = {
             'n': (self.getRoomIndex((thisx, thisy-1)), 's'), 
@@ -103,11 +117,19 @@ class Board:
         for key, value in neigbouring_rooms_indexes.items():
             index = value[0]
             exit = value[1]
-            if index in self.rooms:
-                if self.rooms[index].tile_holder[0].exits[exit] == 1:
-                    neigbouring_rooms.append((key, 1))
-                else:
-                    neigbouring_rooms.append((key, 0))
+
+            # if out of border set that direction to 0 otherwise check if room already placed on the board
+            if key in outofborder:
+                # direction is out of border
+                neigbouring_rooms.append((key, 0))
+            else:
+                # direction is not out of border
+                if index in self.rooms:
+                    # the room exists
+                    if self.rooms[index].tile_holder[0].exits[exit] == 1:
+                        neigbouring_rooms.append((key, 1))
+                    else:
+                        neigbouring_rooms.append((key, 0))
             
         return neigbouring_rooms
 
