@@ -50,7 +50,7 @@ class Board:
             room = Room(room_id, neigbouring_rooms)
             room.enterRoom()
             self.rooms[room_index] = room
-            self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getTileImage(), room.getTileFloor()))
+            self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getRoomWalls(), room.getRoomFloor()))
 
     def getTiles(self):
         return self.tiles

@@ -10,12 +10,12 @@ class Room:
 
     def enterRoom(self):
         if not self.hasTile():
-            self.putTile(self.room_id)
+            self.putTile()
 
-    def putTile(self, room_id):
+    def putTile(self):
         """tile id is same as roomcoordinate"""
         # print(self.neigbouring_rooms)
-        new_tile = Tile(room_id, self.neigbouring_rooms)
+        new_tile = Tile(self.room_id, self.neigbouring_rooms)
         self.tile_holder.append(new_tile)
 
     def hasTile(self):
@@ -27,10 +27,10 @@ class Room:
     def getMob(self):
         pass
     
-    def getTileImage(self):
-        return self.tile_holder[0].getTileImage()
+    def getRoomWalls(self):
+        return self.tile_holder[0].getTileWalls()
 
-    def getTileFloor(self):
+    def getRoomFloor(self):
         return self.tile_holder[0].getTileFloor()
 
     def get_exits(self):

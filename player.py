@@ -26,11 +26,6 @@ class Player:
         self.rely = self.rely + movecords[1]
         self.y = self.rely * self.vely + 35
 
-        # self.relx = self.relx + movecords[0]
-        # self.x = self.velx*self.relx
-        # self.rely = self.rely + movecords[1]
-        # self.y = self.vely*self.rely
-
     def draw(self):
         return self.me
 

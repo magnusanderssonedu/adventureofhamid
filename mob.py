@@ -9,7 +9,7 @@ class Mob:
     #Mob variables
     hp = 20 #mob health points
     killable = True #if killable is False the mob will resurrect on every new encounter. Useful on traps that can be triggered multiple times.
-    agressive = True #is the mob an attacking or passive Mob. Passive mob being a trap door or mine.
+    aggressive = True #is the mob an attacking or passive Mob. Passive mob being a trap door or mine.
     attack = 2 #damage dealt on attack. For passive mobs, like mines or trap doors, this will happen on trigger
     attacktrigger = 0.3 #percentage that the mob will return the attack.
     fleetrigger = 0.2 #percentage that the mob will attack on flight. Usually a value lower than attack trigger unless the mob is passive
