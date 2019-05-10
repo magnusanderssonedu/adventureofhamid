@@ -5,7 +5,7 @@ floors = [
         "tile_stone_4.png",
         "tile_stone_5.png",
         "tile_stone_6.png",
-        "tile_stone_1.png",
+        "tile_stone_7.png",
         "tile_stone_1.png",
         "tile_stone_1.png",
         "tile_stone_1.png",
