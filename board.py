@@ -1,6 +1,8 @@
 import pygame
 import os
 from room import Room
+import random
+from tilefloors import floors
 
 class Board:
     current_tile = 0
@@ -13,6 +15,7 @@ class Board:
     tiles = [] # list with tuples with this boards all tile_images and corresponding coordinates [(coord, tileimage.png, floorimage.png), ...]
     velx = 105 # pixels per coord in room_id
     vely = 105 # pixels per coord in room_id
+    tile_floors = []
 
     def __init__(self, tile = 0, minmove = (0,0), maxmove = (5,5)):
         if (tile >=0 and tile <=5):
@@ -21,7 +24,8 @@ class Board:
             self.current_tile = 0
         self.minmove = minmove
         self.maxmove = maxmove
-
+        random.shuffle(floors)
+        self.tile_floors = floors
         self.tiles = []
 
     def get_current_tile(self):
@@ -47,7 +51,9 @@ class Board:
             room = self.rooms[room_index]
             room.enterRoom()
         else:
-            room = Room(room_id, neigbouring_rooms)
+            
+            tile_floor = self.tile_floors.pop()
+            room = Room(room_id, neigbouring_rooms, tile_floor)
             room.enterRoom()
             self.rooms[room_index] = room
             self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getRoomWalls(), room.getRoomFloor()))
