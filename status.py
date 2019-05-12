@@ -15,8 +15,9 @@ class Status:
     #def draw(self, win):   //Sparar denna så länge
         #pygame.draw.rect(surface, self.bgcolor, [self.coords[0],self.coords[1],self.dimensions[0],self.dimensions[1]])
 
-    def draw(self):
-        return self.me
+    def draw(self,surface):
+        surface.blit(self.me, (self.statuscoords[0],self.statuscoords[1]))
+        #return self.me
 
     def coords(self):
         return (self.statuscoords[0],self.statuscoords[1])
@@ -40,14 +41,14 @@ class StatusContent:
         self.italic = italic
         self.fontobj = pygame.font.SysFont("sans serif",self.size,self.bold,self.italic)
 
-    def draw(self):
+    def draw(self,surface):
         TextSurface = self.fontobj.render(self.text, True, self.color)
-        return TextSurface
+        surface.blit(TextSurface, self.statcoords)
 
     def coords(self):
         return self.statcoords
 
-    def set_text(self,text):
+    def setText(self,text):
         self.text = text
 
 class StatusContentBar:
