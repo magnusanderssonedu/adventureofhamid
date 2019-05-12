@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from board import Board
 from status import Status, StatusContent, StatusContentBar
+from drawhelper import DrawHelper
 
 pygame.init()
 
@@ -34,7 +35,7 @@ def hurtPlayer():
     #this method is only for testing the HP bar
     thePlayer.setHP(thePlayer.getHP()-2)
     theStatusBars["HP"].setValue(thePlayer.getHP()/100.0)
-    theStatusContent["HP"].set_text("HP {:.0f}".format(thePlayer.getHP()))
+    theStatusContent["HP"].setText("HP {:.0f}".format(thePlayer.getHP()))
 
 def possibleMoves(x,y):
     #take it easy, I made the list in Excel
@@ -66,6 +67,11 @@ theStatusBars = {
     }
 run = True
 
+# Set the order of the Objects to be drawn
+theDrawHelper = DrawHelper([theBoard,thePlayer,theStatus])
+theDrawHelper.addObjects([v for v in theStatusBars.values()])
+theDrawHelper.addObjects([v for v in theStatusContent.values()])
+
 while run:  #main loop
 
     for event in pygame.event.get():    #event sniffer
@@ -89,28 +95,16 @@ while run:  #main loop
                             move=(0,-1)
                         if theBoard.is_validmove(move, thePlayer.relcoords()):
                             thePlayer.move(move)
-                            theStatusContent["Coords"].set_text("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
+                            theStatusContent["Coords"].setText("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
                             theBoard.set_current_tile(pressed_key)
                             theBoard.enter_room(thePlayer.relcoords())
-                            theStatusContent["Exits"].set_text("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
-                            theStatusContent["PossibleMoves"].set_text("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
+                            theStatusContent["Exits"].setText("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
+                            theStatusContent["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
 
         if event.type == pygame.KEYUP:
             key_down = False    #key up means player token is moved
 
-    win.fill((0,0,0))
-    win.blit(theBoard.draw(), theBoard.coords())
-    # bliting tiles
-    for t in theBoard.getTiles():
-        win.blit(t[2], t[0])
-        win.blit(t[1], t[0])
-    win.blit(thePlayer.draw(), thePlayer.coords())
-    #bliting statusBar and content
-    win.blit(theStatus.draw(), theStatus.coords())
-    for bars,draw_bars in theStatusBars.items():
-        draw_bars.draw(win)
-    for text,draw_text in theStatusContent.items():
-        win.blit(draw_text.draw(), draw_text.coords())
+    theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
     pygame.display.update()
 
 pygame.quit()

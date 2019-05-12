@@ -34,8 +34,11 @@ class Board:
     def set_current_tile(self, tile):
         self.current_tile = tile
 
-    def draw(self):
-        return self.board
+    def draw(self, surface):    #draws the board with all the tiles
+        surface.blit(self.board, self.boardcoords)
+        for t in self.tiles:
+            surface.blit(t[2], t[0])
+            surface.blit(t[1], t[0])
 
     def coords(self):
         return self.boardcoords
@@ -51,7 +54,7 @@ class Board:
             room = self.rooms[room_index]
             room.enterRoom()
         else:
-            
+
             tile_floor = self.tile_floors.pop()
             room = Room(room_id, neigbouring_rooms, tile_floor)
             room.enterRoom()
@@ -88,7 +91,7 @@ class Board:
             if not room.isValidMove(movecoords):
                 move = False
         return move
-    
+
     def getNeigbouringRooms(self, room_id):
         """
         Check if existing neigbours to room with room_id has doors leading to if
@@ -114,7 +117,7 @@ class Board:
 
         # neigbouring room_indexes: dict = {neigbour direction = (room index, direction to check from that room), ...}
         neigbouring_rooms_indexes = {
-            'n': (self.getRoomIndex((thisx, thisy-1)), 's'), 
+            'n': (self.getRoomIndex((thisx, thisy-1)), 's'),
             'e': (self.getRoomIndex((thisx + 1, thisy)), 'w'),
             's': (self.getRoomIndex((thisx,thisy + 1)),'n'),
             'w': (self.getRoomIndex((thisx - 1, thisy)), 'e')
@@ -136,7 +139,7 @@ class Board:
                         neigbouring_rooms.append((key, 1))
                     else:
                         neigbouring_rooms.append((key, 0))
-            
+
         return neigbouring_rooms
 
 

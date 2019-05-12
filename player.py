@@ -26,8 +26,8 @@ class Player:
         self.rely = self.rely + movecords[1]
         self.y = self.rely * self.vely + 35
 
-    def draw(self):
-        return self.me
+    def draw(self,surface):
+        surface.blit(self.me, (self.x,self.y))
 
     def setHP(self, newhp):
         self.hp = newhp
