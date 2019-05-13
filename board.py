@@ -12,7 +12,7 @@ class Board:
     minmove = (0,0) #top left corner
     maxmove = (5,5) # bottom right corner - (15,10) originally
     rooms = {} # rooms visited on the board
-    tiles = [] # list with tuples with this boards all tile_images and corresponding coordinates [(coord, tileimage.png, floorimage.png), ...]
+    tiles = [] # list with tuples with this boards all tile_images and corresponding coordinates [(coord, wallimage.png, floorimage.png), ...]
     velx = 105 # pixels per coord in room_id
     vely = 105 # pixels per coord in room_id
     tile_floors = []
@@ -37,8 +37,8 @@ class Board:
     def draw(self, surface):    #draws the board with all the tiles
         surface.blit(self.board, self.boardcoords)
         for t in self.tiles:
-            surface.blit(t[2], t[0])
-            surface.blit(t[1], t[0])
+            surface.blit(t[2], t[0]) #floor
+            surface.blit(t[1], t[0]) #walls
 
     def coords(self):
         return self.boardcoords
