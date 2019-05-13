@@ -71,6 +71,7 @@ run = True
 theDrawHelper = DrawHelper([theBoard,thePlayer,theStatus])
 theDrawHelper.addObjects([v for v in theStatusBars.values()])
 theDrawHelper.addObjects([v for v in theStatusContent.values()])
+ReDraw = True   #boolean to minimize number of Blits
 
 while run:  #main loop
 
@@ -100,11 +101,15 @@ while run:  #main loop
                             theBoard.enter_room(thePlayer.relcoords())
                             theStatusContent["Exits"].setText("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
                             theStatusContent["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
+                            ReDraw = True
+                        else:
+                            ReDraw = False
 
         if event.type == pygame.KEYUP:
             key_down = False    #key up means player token is moved
 
-    theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
+    if ReDraw:    #only draw 
+        theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
     pygame.display.update()
 
 pygame.quit()
