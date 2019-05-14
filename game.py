@@ -49,7 +49,7 @@ def possibleMoves(x,y):
     return validmove[y][x]
 
 # Entering first room and setting tile
-theBoard.enter_room(thePlayer.relcoords())
+theBoard.enter_room(thePlayer.relcoords(), hasmob=False)
 
 
 # theStatus = Status((804,0),(246,630),(0,0,0))

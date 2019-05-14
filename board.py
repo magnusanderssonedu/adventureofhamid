@@ -43,7 +43,7 @@ class Board:
     def coords(self):
         return self.boardcoords
 
-    def enter_room(self, room_id):
+    def enter_room(self, room_id, hasmob=True):
         """
         Is called from game to enter new or old room
         room_id:tuple
@@ -56,7 +56,7 @@ class Board:
         else:
 
             tile_floor = self.tile_floors.pop()
-            room = Room(room_id, neigbouring_rooms, tile_floor)
+            room = Room(room_id, neigbouring_rooms, tile_floor, hasmob)
             room.enterRoom()
             self.rooms[room_index] = room
             self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getRoomWalls(), room.getRoomFloor()))

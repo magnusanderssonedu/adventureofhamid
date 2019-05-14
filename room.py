@@ -4,11 +4,15 @@ class Room:
     room_id = (-1,-1)
     neigbouring_rooms = []
     tile_floor = ""
-    def __init__(self, room_id, neigbouring_rooms, tile_floor):
+    hasmob = True
+    def __init__(self, room_id, neigbouring_rooms, tile_floor, hasmob=True):
         self.room_id = room_id
         self.tile_holder = []
         self.tile_floor = tile_floor
         self.neigbouring_rooms = neigbouring_rooms
+        self.hasmob = hasmob
+        print("hasmob:", hasmob)
+        mob = self.getMob()
 
     def enterRoom(self):
         if not self.hasTile():
@@ -27,7 +31,10 @@ class Room:
         return self.tile_holder[0]
 
     def getMob(self):
-        pass
+        if hasmob:
+            pass
+        else:
+            pass
     
     def getRoomWalls(self):
         return self.tile_holder[0].getTileWalls()
