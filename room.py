@@ -1,4 +1,7 @@
 from tile import Tile
+from mobdict import mobdict
+import random
+
 class Room:
     tile_holder = []
     room_id = (-1,-1)
@@ -13,6 +16,7 @@ class Room:
         self.hasmob = hasmob
         print("hasmob:", hasmob)
         mob = self.getMob()
+        
 
     def enterRoom(self):
         if not self.hasTile():
@@ -31,10 +35,11 @@ class Room:
         return self.tile_holder[0]
 
     def getMob(self):
-        if hasmob:
-            pass
+        if self.hasmob:
+            mob = random.choice(list(mobdict.items()))
         else:
-            pass
+            mob = {'hp':-1}
+        return mob
     
     def getRoomWalls(self):
         return self.tile_holder[0].getTileWalls()
