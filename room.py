@@ -8,19 +8,26 @@ class Room:
     neigbouring_rooms = []
     tile_floor = ""
     hasmob = True
+    mob = {}
     def __init__(self, room_id, neigbouring_rooms, tile_floor, hasmob=True):
         self.room_id = room_id
         self.tile_holder = []
         self.tile_floor = tile_floor
         self.neigbouring_rooms = neigbouring_rooms
         self.hasmob = hasmob
-        print("hasmob:", hasmob)
-        mob = self.getMob()
-        print(mob)
+        self.mob = {}
 
     def enterRoom(self):
+        """This is called from the board when a player enters the room"""
+        # put tile if there isn't one
         if not self.hasTile():
             self.putTile()
+        # get this rooms mob depending on certain circumstances
+        self.mob = self.getMob()
+        # try:
+        #     print(self.mob['name'])
+        # except Exception as e:
+        #     print(e)
 
     def putTile(self):
         """tile id is same as roomcoordinate"""
@@ -35,16 +42,26 @@ class Room:
         return self.tile_holder[0]
 
     def getMob(self):
-        if self.hasmob:
+        """Get this rooms mob, depending on certain circumstances"""
+        # if this room is supposed to have a mob but doesn't yet, find one randomly
+        if self.hasmob and not self.mob:
             mobkey = random.choice(list(mobdict.keys()))
+            mob = mobdict[mobkey]
+        # else if this room is supposed to have a mob and already has one, get that one
+        elif self.hasmob and self.mob:
+            mob = self.mob
+        # else if this room isn't supposed to have a mob get the nothing mob
         else:
-            mobkey = 0
-        return mobdict[mobkey]
+            # get the nothing-mob
+            mob = mobdict[0]
+        return mob
     
     def getRoomWalls(self):
+        """Get this rooms walls"""
         return self.tile_holder[0].getTileWalls()
 
     def getRoomFloor(self):
+        """Get this rooms floor"""
         return self.tile_holder[0].getTileFloor()
 
     def get_exits(self):
