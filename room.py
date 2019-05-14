@@ -16,7 +16,7 @@ class Room:
         self.hasmob = hasmob
         print("hasmob:", hasmob)
         mob = self.getMob()
-        
+        print(mob)
 
     def enterRoom(self):
         if not self.hasTile():
@@ -36,10 +36,10 @@ class Room:
 
     def getMob(self):
         if self.hasmob:
-            mob = random.choice(list(mobdict.items()))
+            mobkey = random.choice(list(mobdict.keys()))
         else:
-            mob = {'hp':-1}
-        return mob
+            mobkey = 0
+        return mobdict[mobkey]
     
     def getRoomWalls(self):
         return self.tile_holder[0].getTileWalls()
