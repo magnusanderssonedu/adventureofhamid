@@ -59,7 +59,8 @@ theStatusContent = {
     "Throw":  StatusContent(text="Throw die", size=24, coords=(650,80)),
     "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)),
     "Exits":    StatusContent(text="Exits: e s", size=24, coords=(650, 250)),
-    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 300))
+    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 300)),
+    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 350))
 }
 
 theStatusBars = {
@@ -98,7 +99,8 @@ while run:  #main loop
                             thePlayer.move(move)
                             theStatusContent["Coords"].setText("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
                             theBoard.set_current_tile(pressed_key)
-                            theBoard.enter_room(thePlayer.relcoords())
+                            room_mob = theBoard.enter_room(thePlayer.relcoords())
+                            theStatusContent['Mob'].setText(room_mob["name"])
                             theStatusContent["Exits"].setText("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
                             theStatusContent["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
                             ReDraw = True

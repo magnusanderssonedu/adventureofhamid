@@ -24,10 +24,6 @@ class Room:
             self.putTile()
         # get this rooms mob depending on certain circumstances
         self.mob = self.getMob()
-        # try:
-        #     print(self.mob['name'])
-        # except Exception as e:
-        #     print(e)
 
     def putTile(self):
         """tile id is same as roomcoordinate"""
@@ -42,7 +38,7 @@ class Room:
         return self.tile_holder[0]
 
     def getMob(self):
-        """Get this rooms mob, depending on certain circumstances"""
+        """Get this rooms mob"""
         # if this room is supposed to have a mob but doesn't yet, find one randomly
         if self.hasmob and not self.mob:
             mobkey = random.choice(list(mobdict.keys()))

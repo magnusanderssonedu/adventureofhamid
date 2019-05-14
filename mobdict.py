@@ -4,7 +4,7 @@ monsterloot = ["gold", "jewlery", "food", "stone", "rope", "dagger"]
 mobdict = {
     0: {
         "category": "nothing",
-        "name": "nothing",
+        "name": "Empty room",
         "description": "nothing",
         "hp": -1,
         "killable": False,
@@ -41,7 +41,7 @@ mobdict = {
     },
     3: {
         "category": "treasure",
-        "name": "chest",
+        "name": "A Chest",
         "description": "You find a chest full of...what?",
         "hp": 0,
         "killable": True,
