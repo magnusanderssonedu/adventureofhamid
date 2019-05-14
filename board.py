@@ -60,6 +60,13 @@ class Board:
             room.enterRoom()
             self.rooms[room_index] = room
             self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getRoomWalls(), room.getRoomFloor()))
+        
+        return self.rooms[room_index].getMob()
+
+    def getRoomsMob(self, room_id):
+        """Supposed to be called from game to get a certain rooms mob"""
+        room_index = self.getRoomIndex(room_id)
+        return self.rooms[room_index].getMob()
 
     def getTiles(self):
         return self.tiles
