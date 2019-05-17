@@ -18,7 +18,7 @@ mobdict = {
     1: {
         "category": "monster",
         "name": "Zombie",
-        "description": "A very smelly zombie",
+        "description": "Welcome to the death room, the Zombie is here. He has been here for a long time, nobody knows how long because nobody has never came out of this room alive. You will soon enough smell the flesh of the zombie.do not be afraid,trust in yourself",
         "hp": random.randint(4,10),
         "killable": True,
         "aggressive": True,
@@ -30,7 +30,7 @@ mobdict = {
     2: {
         "category": "monster",
         "name": "Skeleton",
-        "description": "A very bony skeleton",
+        "description": "you can hear the sound of bone hitting the ground, he is coming for you The skeleton looks very fresh and bony, you could see places in his body where flesh has recently been removed, there is a hole around the skull with a sharp knife in it, are you brave enough to fight him?",
         "hp": random.randint(2,5),
         "killable": True,
         "aggressive": True,
