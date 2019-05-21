@@ -62,9 +62,10 @@ theStatusContent = {
     "Throw":  StatusContent(text="Throw die", size=24, coords=(650,80)),
     "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)),
     "Exits":    StatusContent(text="Exits: e s", size=24, coords=(650, 250)),
-    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 300)),
+    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 270)),
     "Mob": StatusContent(text="Empty room", size=24, coords=(650, 350), bold=True),
-    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 370))
+    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 370)),
+    "MobAction": StatusContent(text="", size=16, coords=(650, 310))
 }
 
 theStatusBars = {
@@ -120,8 +121,17 @@ while run:  #main loop
                 key_down = False    #key up means player token is moved
             
         elif gamestate == 2:
+            theStatusContent['MobAction'].setText("")
             if room_mob['category'] == 'monster':
-                print("vill du slåss mot monstret", room_mob['name'])
+                print("Anfalla", room_mob['name'])
+                theStatusContent['MobAction'].setText("Attack {}?\nPress enter".format(room_mob['name']))
+                
+            elif room_mob['category'] == 'treasure':
+                print("Vill du öppna upp skatten")
+                theStatusContent['MobAction'].setText("Open {}?\nPress enter".format(room_mob['name']))
+            elif room_mob['category'] == 'trap':
+                print("IT'S A TRAP")
+                
             gamestate = 1
             key_down = False
 
