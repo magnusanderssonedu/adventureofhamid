@@ -60,8 +60,8 @@ theStatusContent = {
     "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)),
     "Exits":    StatusContent(text="Exits: e s", size=24, coords=(650, 250)),
     "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 300)),
-    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 350)),
-    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 400))
+    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 350), bold=True),
+    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 370))
 }
 
 theStatusBars = {
@@ -112,7 +112,7 @@ while run:  #main loop
         if event.type == pygame.KEYUP:
             key_down = False    #key up means player token is moved
 
-    if ReDraw:    #only draw 
+    if ReDraw:    #only draw
         theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
     pygame.display.update()
 
