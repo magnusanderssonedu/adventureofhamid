@@ -24,7 +24,7 @@ class Status:
 
 
 class StatusContent:
-    text = ""
+    textArray = []
     size = 12
     color = (255,255,255)
     statcoords = (0,0)
@@ -33,7 +33,7 @@ class StatusContent:
     fontobj = False
 
     def __init__(self, text="",size=12,color = (255,255,255),coords=(0,0),bold=False,italic=False):
-        self.text = text
+        self.setText(text)
         self.size = size
         self.color = color
         self.statcoords = coords
@@ -42,14 +42,24 @@ class StatusContent:
         self.fontobj = pygame.font.SysFont("sans serif",self.size,self.bold,self.italic)
 
     def draw(self,surface):
-        TextSurface = self.fontobj.render(self.text, True, self.color)
-        surface.blit(TextSurface, self.statcoords)
+        n = 0
+        for text in self.textArray:
+            TextSurface = self.fontobj.render(text, True, self.color)
+            surface.blit(TextSurface, (self.statcoords[0],self.statcoords[1]+n*self.size))
+            n += 1
 
     def coords(self):
         return self.statcoords
 
     def setText(self,text):
-        self.text = text
+        if text.find("\n") > -1:
+            self.textArray = text.split("\n")
+            n = 0
+            for text in self.textArray:
+                self.textArray[n] = text.strip()
+                n += 1
+        else:
+            self.textArray = [text]
 
 class StatusContentBar:
     dimensions = (180,20)

@@ -18,7 +18,15 @@ mobdict = {
     1: {
         "category": "monster",
         "name": "Zombie",
-        "description": "Welcome to the death room, the Zombie is here. He has been here for a long time, nobody knows how long because nobody has never came out of this room alive. You will soon enough smell the flesh of the zombie.do not be afraid,trust in yourself",
+        "description": """Welcome to the death room,
+        the Zombie is here. He has
+        been here for a long time,
+        nobody knows how long
+        because nobody has never
+        come out of this room alive.
+        You will soon enough smell the
+        flesh of the zombie. Do not be
+        afraid, trust in yourself""",
         "hp": random.randint(4,10),
         "killable": True,
         "aggressive": True,
@@ -30,7 +38,16 @@ mobdict = {
     2: {
         "category": "monster",
         "name": "Skeleton",
-        "description": "you can hear the sound of bone hitting the ground, he is coming for you The skeleton looks very fresh and bony, you could see places in his body where flesh has recently been removed, there is a hole around the skull with a sharp knife in it, are you brave enough to fight him?",
+        "description": """You can hear the sound of
+        bone hitting the ground. It is
+        coming for you. The skeleton
+        looks very fresh and bony, you
+        could see places in his body
+        where flesh has recently been
+        removed. There is a hole around
+        the skull with a sharp knife in it.
+        - Are you brave enough
+        to fight it?""",
         "hp": random.randint(2,5),
         "killable": True,
         "aggressive": True,
@@ -42,7 +59,8 @@ mobdict = {
     3: {
         "category": "treasure",
         "name": "A Chest",
-        "description": "You find a chest full of...what?",
+        "description": """You find a chest full of
+        ...what?""",
         "hp": 0,
         "killable": True,
         "aggressive": False,
@@ -54,7 +72,9 @@ mobdict = {
     4: {
         "category": "trap",
         "name": "Arrows from wall",
-        "description": "When you step into the room arrows shots out from small holes in the wall",
+        "description": """When you step into the room
+        arrows shoots out from small
+        holes in the wall!""",
         "hp": 0,
         "killable": True,
         "aggressive": True,
@@ -63,5 +83,5 @@ mobdict = {
         "sprite": "chest",
         "loot": []
     }
-    
+
 }
