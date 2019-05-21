@@ -4,6 +4,9 @@ from board import Board
 from status import Status, StatusContent, StatusContentBar
 from drawhelper import DrawHelper
 
+
+
+
 pygame.init()
 
 win = pygame.display.set_mode((830,630))
@@ -75,42 +78,54 @@ theDrawHelper.addObjects([v for v in theStatusBars.values()])
 theDrawHelper.addObjects([v for v in theStatusContent.values()])
 ReDraw = True   #boolean to minimize number of Blits
 
+gamestate = 1
+room_mob_list = []
 while run:  #main loop
 
     for event in pygame.event.get():    #event sniffer
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.KEYDOWN:    #handeling key event
-            if not key_down:    #the player token will be constantly triggering this event, so just check if the token is moved to save time
-                pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
-                if pressed_key >= 0:
-                    key_down = True
-                    move = (0,0)
-                    if theBoard.get_current_tile != pressed_key:
-                        #check for the difference between last key and pressed key
-                        if key_diff(theBoard.get_current_tile(),pressed_key) == -1 or key_diff(theBoard.get_current_tile(),pressed_key) == 5: #moved_right
-                            move=(1,0)
-                        if key_diff(theBoard.get_current_tile(),pressed_key) == 1 or key_diff(theBoard.get_current_tile(),pressed_key) == -5:  #moved_left
-                            move=(-1,0)
-                        if key_diff(theBoard.get_current_tile(),pressed_key) == -2 or key_diff(theBoard.get_current_tile(),pressed_key) == 4:  #moved_down
-                            move=(0,1)
-                        if key_diff(theBoard.get_current_tile(),pressed_key) == 2 or key_diff(theBoard.get_current_tile(),pressed_key) == -4:  #moved_up
-                            move=(0,-1)
-                        if theBoard.is_validmove(move, thePlayer.relcoords()):
-                            thePlayer.move(move)
-                            theStatusContent["Coords"].setText("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
-                            theBoard.set_current_tile(pressed_key)
-                            room_mob = theBoard.enter_room(thePlayer.relcoords())
-                            theStatusContent['Mob'].setText(room_mob["name"])
-                            theStatusContent['MobDesc'].setText(room_mob['description'])
-                            theStatusContent["Exits"].setText("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
-                            theStatusContent["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
-                            ReDraw = True
-                        else:
-                            ReDraw = False
+        if gamestate == 1:
+            if event.type == pygame.KEYDOWN:    #handeling key event
+                if not key_down:    #the player token will be constantly triggering this event, so just check if the token is moved to save time
+                    pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
+                    if pressed_key >= 0:
+                        key_down = True
+                        move = (0,0)
+                        if theBoard.get_current_tile != pressed_key:
+                            #check for the difference between last key and pressed key
+                            if key_diff(theBoard.get_current_tile(),pressed_key) == -1 or key_diff(theBoard.get_current_tile(),pressed_key) == 5: #moved_right
+                                move=(1,0)
+                            if key_diff(theBoard.get_current_tile(),pressed_key) == 1 or key_diff(theBoard.get_current_tile(),pressed_key) == -5:  #moved_left
+                                move=(-1,0)
+                            if key_diff(theBoard.get_current_tile(),pressed_key) == -2 or key_diff(theBoard.get_current_tile(),pressed_key) == 4:  #moved_down
+                                move=(0,1)
+                            if key_diff(theBoard.get_current_tile(),pressed_key) == 2 or key_diff(theBoard.get_current_tile(),pressed_key) == -4:  #moved_up
+                                move=(0,-1)
+                            if theBoard.is_validmove(move, thePlayer.relcoords()):
+                                thePlayer.move(move)
+                                theStatusContent["Coords"].setText("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
+                                theBoard.set_current_tile(pressed_key)
+                                room_mob = theBoard.enter_room(thePlayer.relcoords())
+                                # room_mob_list.append(room_mob)
+                                theStatusContent['Mob'].setText(room_mob["name"])
+                                theStatusContent['MobDesc'].setText(room_mob['description'])
+                                theStatusContent["Exits"].setText("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
+                                theStatusContent["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
+                                ReDraw = True
+                                gamestate = 2
+                            else:
+                                ReDraw = False
+            if event.type == pygame.KEYUP:
+                key_down = False    #key up means player token is moved
+            
+        elif gamestate == 2:
+            if room_mob['category'] == 'monster':
+                print("vill du slåss mot monstret", room_mob['name'])
+            gamestate = 1
+            key_down = False
 
-        if event.type == pygame.KEYUP:
-            key_down = False    #key up means player token is moved
+        
 
     if ReDraw:    #only draw
         theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
