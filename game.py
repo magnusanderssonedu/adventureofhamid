@@ -47,12 +47,13 @@ theStatus = Status((630,0),(830,630),(0,0,0))
 theStatusContent = {
     "HP":   StatusContent(text="HP 100", size=24, coords=(650,20)),
     "Throw":  StatusContent(text="Throw die", size=24, coords=(650,80)),
-    "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)),
-    "Exits":    StatusContent(text="Exits: e s", size=24, coords=(650, 250)),
-    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 270)),
-    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 350), bold=True),
+    "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,50)),
+    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 110)),
+    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 330), bold=True),
+    "MobHP": StatusContent(text="", size=24, coords=(650, 350), bold=True),
     "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 370)),
-    "MobAction": StatusContent(text="", size=16, coords=(650, 310))
+    "MobAction": StatusContent(text="", size=16, coords=(650, 310)),
+    "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(650, 130))
 }
 
 theStatusBars = {
@@ -60,16 +61,21 @@ theStatusBars = {
     }
 run = True
 
+gamecomponents ={
+    'board': theBoard,
+    'player': thePlayer,
+    'statuscontent': theStatusContent
+}
+
 # Set the order of the Objects to be drawn
 theDrawHelper = DrawHelper([theBoard,thePlayer,theStatus])
 theDrawHelper.addObjects([v for v in theStatusBars.values()])
 theDrawHelper.addObjects([v for v in theStatusContent.values()])
-ReDraw = True   #boolean to minimize number of Blits
+redraw = True   #boolean to minimize number of Blits
 
 gamestate = 1
 room_mob = {}
 room_mob_list = []
-action = False
 while run:  #main loop
 
     for event in pygame.event.get():    #event sniffer
@@ -78,28 +84,29 @@ while run:  #main loop
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 if gamestate == 2:
-                    roomAction(theStatusContent, room_mob)
-                print(event.key)
-                if gamestate == 1:
-                    gamestate = 2
-                else:
-                    gamestate = 1
+                    roomAction(gamecomponents, room_mob)
+                    if gamestate == 1:
+                        gamestate = 2
+                    else:
+                        gamestate = 1
             else:
                 pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
-                room_mob = move(gamestate, pressed_key, theBoard, thePlayer, theStatusContent)
+                gamecomponents, room_mob, redraw = move(gamestate, pressed_key, gamecomponents)
                 if gamestate == 1:
                     gamestate = 2
                 else:
                     gamestate = 1
-        
 
-    theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
-    pygame.display.update()
+    gamecomponents['statuscontent']['Gamestate'].setText("Gamestate: {}".format(gamestate))
+        
+    if redraw:
+        theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
+        pygame.display.update()
         
 
     
 
-# pygame.quit()
+pygame.quit()
 
 
 #  if gamestate == 1:
