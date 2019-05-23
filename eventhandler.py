@@ -62,7 +62,9 @@ def roomAction(gc, room_mob):
     if room_mob.category == 'monster':
         gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob.name))
         damage = random.randint(1,2)
-        left = damage - room_mob.hp
+        left = room_mob.hp - damage
+        print("damage:", damage)
+        print("left:", left)
         if left > 0:
             room_mob.setHP(left)
             gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
