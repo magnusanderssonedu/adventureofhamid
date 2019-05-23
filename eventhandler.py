@@ -65,26 +65,22 @@ def move(gamestate, pressed_key, gc):
 def roomAction(gc, room_mob):
     """you will end up here if when you press enter and invoke the action in a room"""
     gc['statuscontent']['MobAction'].setText("")
+
+    # if mob is a monster when you press enter the player attacks and get attacked back if the mob is still alive
     if room_mob.category == 'monster':
         gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob.name))
         damage = random.randint(1,2)
         left = room_mob.hp - damage
-        print("damage:", damage)
-        print("left:", left)
+
+        # if mob has any hp left set new hp to that mob and let the mob hit back at the player
+        # else mob is dead (set mob hp to 0) and tell that room i doesn't have any mob any more (hasmob = False)
         if left > 0:
             room_mob.setHP(left)
             gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
-            #hitting back
             hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
-            # player_hp = gc['player'].getHP()
-            # new_player_hp = player_hp - room_mob.damage
-            # gc['player'].setHP(new_player_hp)
-            # print("player_hp:", player_hp)
-            # print("damage:", room_mob.damage)
-            # print("new_player_hp:", new_player_hp)
-            
         else:
             room_mob.setHP(0)
+            gc['board'].setNoMob(gc['player'].relcoords())
             gc['statuscontent']['MobHP'].setText("DEAD!")
     elif room_mob.category == 'treasure':
         print("OPEN TREASURE")

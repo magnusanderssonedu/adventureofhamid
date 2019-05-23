@@ -40,6 +40,9 @@ class Room:
     def getTile(self):
         return self.tile_holder[0]
 
+    def setNoMob(self):
+        self.hasmob = False
+
     def getMob(self):
         """Get this rooms mob"""
 
