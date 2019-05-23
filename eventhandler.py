@@ -25,7 +25,7 @@ def hurtPlayer(statusbar, statuscontent, player, damage):
     statuscontent["HP"].setText("HP {:.0f}".format(player.getHP()))
 
 def move(gamestate, pressed_key, gc):
-    room_mob = {}
+    # room_mob = {}
     redraw = False
     gamestate = 1
     if pressed_key >= 0:      
@@ -41,6 +41,14 @@ def move(gamestate, pressed_key, gc):
             if key_diff(gc['board'].get_current_tile(),pressed_key) == 2 or key_diff(gc['board'].get_current_tile(),pressed_key) == -4:  #moved_up
                 move=(0,-1)
             if gc['board'].is_validmove(move, gc['player'].relcoords()):
+                # hämta den mob som man eventuellt lämnar och se till att den slår en hårt och illa
+                old_room_mob = gc['board'].getRoomsMob(gc['player'].relcoords())
+                try:
+                    if old_room_mob.category == 'monster':
+                        hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], old_room_mob.damage*2)
+                except Exception as e:
+                    print("Error", e)
+
                 gc['player'].move(move)
                 gc['statuscontent']["Coords"].setText("({},{})".format(gc['player'].relcoords()[0],gc['player'].relcoords()[1]))
                 gc['board'].set_current_tile(pressed_key)

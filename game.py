@@ -88,7 +88,8 @@ while run:  #main loop
                     gamestate = gs
             else:
                 pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
-                gamecomponents, room_mob, redraw, gs = move(gamestate, pressed_key, gamecomponents)
+                gamecomponents, rb, redraw, gs = move(gamestate, pressed_key, gamecomponents)
+                room_mob = rb
                 gamestate = gs
 
     gamecomponents['statuscontent']['Gamestate'].setText("Gamestate: {}".format(gamestate))
