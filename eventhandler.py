@@ -18,6 +18,12 @@ def possibleMoves(x,y):
 
     return validmove[y][x]
 
+def hurtPlayer(statusbar, statuscontent, player, damage):
+    #this method is only for testing the HP bar
+    player.setHP(player.getHP()-damage)
+    statusbar["HP"].setValue(player.getHP()/100.0)
+    statuscontent["HP"].setText("HP {:.0f}".format(player.getHP()))
+
 def move(gamestate, pressed_key, gc):
     room_mob = {}
     redraw = False
@@ -68,7 +74,17 @@ def roomAction(gc, room_mob):
         if left > 0:
             room_mob.setHP(left)
             gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
+            #hitting back
+            hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
+            # player_hp = gc['player'].getHP()
+            # new_player_hp = player_hp - room_mob.damage
+            # gc['player'].setHP(new_player_hp)
+            # print("player_hp:", player_hp)
+            # print("damage:", room_mob.damage)
+            # print("new_player_hp:", new_player_hp)
+            
         else:
+            room_mob.setHP(0)
             gc['statuscontent']['MobHP'].setText("DEAD!")
     elif room_mob.category == 'treasure':
         print("OPEN TREASURE")

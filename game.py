@@ -30,11 +30,7 @@ def id_keys():
 thePlayer = Player()
 theBoard = Board()
 
-def hurtPlayer():
-    #this method is only for testing the HP bar
-    thePlayer.setHP(thePlayer.getHP()-2)
-    theStatusBars["HP"].setValue(thePlayer.getHP()/100.0)
-    theStatusContent["HP"].setText("HP {:.0f}".format(thePlayer.getHP()))
+
 
 
 
@@ -66,7 +62,8 @@ run = True
 gamecomponents ={
     'board': theBoard,
     'player': thePlayer,
-    'statuscontent': theStatusContent
+    'statuscontent': theStatusContent,
+    'statusbar': theStatusBars
 }
 
 # Set the order of the Objects to be drawn
