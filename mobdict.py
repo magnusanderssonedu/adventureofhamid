@@ -82,6 +82,42 @@ mobdict = {
         "fleetrigger": 0,
         "sprite": "chest",
         "loot": []
-    }
+    },
+    5: {
+        "category": "monster",
+        "name": "Jones the pirate",
+        "description": "I am sure that you have heard about the jones the pirate,he has the soul of devil in himself, he has became the spirit of sea by collecting the souls of people who died at sea  !""",
+        "hp": random.randint(2,8),
+        "killable": True,
+        "aggressive": True,
+        "attacktrigger": random.randint(1,5)/10,
+        "fleetrigger": 0,
+        "sprite": "chest",
+        "loot": []
+    },
+    6:  {
+        "category": "monster",
+        "name": "A vampire wolf",
+        "description": "this creature has been reprted from north to south, He will drain your body out of blod, he is a large bear sized creature with long arms and three sharp fingers.
+        "killable": True,
+        "aggressive": True,
+        "attacktrigger": random.randint(1,5)/10,
+        "fleetrigger": 0,
+        "sprite": "chest",
+        "loot": []
+    },
+     6:  {
+        "category": "monster",
+        "name": "A resurrected corpse",
+        "description": "He has returned back from a long absence,he has returned back from the dead for one reason, to kill you  .
+        "killable": True,
+        "aggressive": True,
+        "attacktrigger": random.randint(1,5)/10,
+        "fleetrigger": 0,
+        "sprite": "chest",
+        "loot": []
+    },
 
-}
+
+     
+    
