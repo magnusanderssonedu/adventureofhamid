@@ -47,14 +47,22 @@ def move(gamestate, pressed_key, gc):
                 room_mob = gc['board'].enter_room(gc['player'].relcoords())
                 # room_mob_list.append(room_mob)
                 gc['statuscontent']['Mob'].setText(room_mob.name)
-                if room_mob.category == 'monster':
+                if room_mob.category == 'monster' or room_mob.category == 'trap':
                     gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
-                    gc['statuscontent']['MobAttack'].setText("Attack: " + str(room_mob.attacktrigger*100))
-                    gc['statuscontent']['MobDamage'].setText("Damage: " + str(room_mob.attack))
+                    gc['statuscontent']['MobAttack'].setText("Attack: " + str(room_mob.attacktrigger*100)+"%")
+                    gc['statuscontent']['MobDamage'].setText("Damage: " + str(room_mob.damage))
                 else:
                     gc['statuscontent']['MobHP'].setText("")
                     gc['statuscontent']['MobAttack'].setText("")
                     gc['statuscontent']['MobDamage'].setText("")
+                
+                
+                if room_mob.category == 'trap':
+                    dice = random.randint(1, 100)
+                    print("Nu kommer jag till en fälla")
+                    if dice <= room_mob.attacktrigger*100:
+                        hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
+                        print("Jag blev visst skadad")
                 gc['statuscontent']['MobDesc'].setText(room_mob.description)
                 gc['statuscontent']["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(gc['player'].relcoords()[0],gc['player'].relcoords()[1])))
                 redraw = True
@@ -65,10 +73,12 @@ def move(gamestate, pressed_key, gc):
 def roomAction(gc, room_mob):
     """you will end up here if when you press enter and invoke the action in a room"""
     gc['statuscontent']['MobAction'].setText("")
-
+    gamestate = 2
+    # print("room_mob['category']:", room_mob['category'])
     # if mob is a monster when you press enter the player attacks and get attacked back if the mob is still alive
     if room_mob.category == 'monster':
         gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob.name))
+        
         damage = random.randint(1,2)
         left = room_mob.hp - damage
 
@@ -77,15 +87,22 @@ def roomAction(gc, room_mob):
         if left > 0:
             room_mob.setHP(left)
             gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
-            hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
+            dice = random.randint(1, 100)
+            if dice <= room_mob.attacktrigger*100:
+                hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
         else:
             room_mob.setHP(0)
             gc['board'].setNoMob(gc['player'].relcoords())
             gc['statuscontent']['MobHP'].setText("DEAD!")
+            gamestate = 1
     elif room_mob.category == 'treasure':
         print("OPEN TREASURE")
         gc['statuscontent']['MobAction'].setText("Open {}?\nPress enter".format(room_mob['name']))
-    elif room_mob['category'] == 'trap':
-        print("IT'S A TRAP")
+    # elif room_mob['category'] == 'trap':
+    #     dice = random.randint(1, 100)
+    #     print("Nu kommer jag till en fälla")
+    #     if dice <= room_mob.attacktrigger*100:
+    #         hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
+    #         print("Jag blev visst skadad")
 
-    return gc, room_mob
+    return gc, room_mob, gamestate

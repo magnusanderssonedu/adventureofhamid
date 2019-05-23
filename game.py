@@ -83,8 +83,9 @@ while run:  #main loop
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 if gamestate == 2:
-                    gamecomponent, rb = roomAction(gamecomponents, room_mob)
+                    gamecomponent, rb, gs = roomAction(gamecomponents, room_mob)
                     room_mob = rb
+                    gamestate = gs
             else:
                 pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
                 gamecomponents, room_mob, redraw, gs = move(gamestate, pressed_key, gamecomponents)
