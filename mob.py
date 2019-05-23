@@ -10,27 +10,32 @@ class Mob:
     hp = 20 #mob health points
     killable = True #if killable is False the mob will resurrect on every new encounter. Useful on traps that can be triggered multiple times.
     aggressive = True #is the mob an attacking or passive Mob. Passive mob being a trap door or mine.
-    attack = 2 #damage dealt on attack. For passive mobs, like mines or trap doors, this will happen on trigger
+    damage = 2 #damage dealt on attack. For passive mobs, like mines or trap doors, this will happen on trigger
     attacktrigger = 0.3 #percentage that the mob will return the attack.
     fleetrigger = 0.2 #percentage that the mob will attack on flight. Usually a value lower than attack trigger unless the mob is passive
     description = "a mob" #Description for the status bar
+    name = "Eskil"
+    category = "ruggig"
     me = None #image of the mob. Use keywords from picpicker to choose sprite
-
+    loot = []
     picpicker = {
         "mine": "mob_mine.png",
         "trap": "mob_trap.png",
         "zombie": "mob_zombie.png"
     }
 
-    def __init__(self,hp=0,killable = True,description="Mine",aggressive=False,attack=10,attacktrigger=0.3,fleetrigger=0.2,sprite="mine"):
+    def __init__(self,hp,killable,description,aggressive,damage,attacktrigger,fleetrigger,loot,name, category,sprite="mine"):
         self.hp = hp
         self.killable = killable
         self.aggressive = aggressive
+        self.damage = damage
+        self.loot = loot
         self.attacktrigger = attacktrigger
         self.fleetrigger = fleetrigger
-        self.trigger = trigger
         self.description = description
-        self.me = pygame.image.load(os.path.join('data', self.picpicker[sprite]));
+        self.name = name
+        self.category = category
+        self.me = pygame.image.load(os.path.join('data', self.picpicker[sprite]))
 
     def attack(self,dievalue,flee=False):
         """
@@ -65,3 +70,6 @@ class Mob:
 
     def getHPvalue(self):  #return hp for drawing on status
         return self.hp
+
+    def setHP(self, value):
+        self.hp = value

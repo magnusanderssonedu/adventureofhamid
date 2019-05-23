@@ -1,4 +1,5 @@
 import pygame
+import random
 
 def key_diff(cur,pres): #returns difference between two keys using the key-tuple
     return postuple(cur) - postuple(pres)
@@ -20,6 +21,7 @@ def possibleMoves(x,y):
 def move(gamestate, pressed_key, gc):
     room_mob = {}
     redraw = False
+    gamestate = 1
     if pressed_key >= 0:      
         move = (0,0)
         if gc['board'].get_current_tile != pressed_key:
@@ -38,26 +40,38 @@ def move(gamestate, pressed_key, gc):
                 gc['board'].set_current_tile(pressed_key)
                 room_mob = gc['board'].enter_room(gc['player'].relcoords())
                 # room_mob_list.append(room_mob)
-                gc['statuscontent']['Mob'].setText(room_mob["name"])
-                if room_mob['category'] == 'monster':
-                    gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob['hp']))
+                gc['statuscontent']['Mob'].setText(room_mob.name)
+                if room_mob.category == 'monster':
+                    gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
+                    gc['statuscontent']['MobAttack'].setText("Attack: " + str(room_mob.attacktrigger*100))
+                    gc['statuscontent']['MobDamage'].setText("Damage: " + str(room_mob.attack))
                 else:
                     gc['statuscontent']['MobHP'].setText("")
-                gc['statuscontent']['MobDesc'].setText(room_mob['description'])
+                    gc['statuscontent']['MobAttack'].setText("")
+                    gc['statuscontent']['MobDamage'].setText("")
+                gc['statuscontent']['MobDesc'].setText(room_mob.description)
                 gc['statuscontent']["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(gc['player'].relcoords()[0],gc['player'].relcoords()[1])))
                 redraw = True
                 gamestate = 2
 
-    return gc, room_mob, redraw
+    return gc, room_mob, redraw, gamestate
 
 def roomAction(gc, room_mob):
     """you will end up here if when you press enter and invoke the action in a room"""
     gc['statuscontent']['MobAction'].setText("")
-    if room_mob['category'] == 'monster':
-        gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob['name']))
-
-    elif room_mob['category'] == 'treasure':
+    if room_mob.category == 'monster':
+        gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob.name))
+        damage = random.randint(1,2)
+        left = damage - room_mob.hp
+        if left > 0:
+            room_mob.setHP(left)
+            gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
+        else:
+            gc['statuscontent']['MobHP'].setText("DEAD!")
+    elif room_mob.category == 'treasure':
         print("OPEN TREASURE")
-        theStatusContent['MobAction'].setText("Open {}?\nPress enter".format(room_mob['name']))
+        gc['statuscontent']['MobAction'].setText("Open {}?\nPress enter".format(room_mob['name']))
     elif room_mob['category'] == 'trap':
         print("IT'S A TRAP")
+
+    return gc, room_mob

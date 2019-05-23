@@ -50,8 +50,10 @@ theStatusContent = {
     "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,50)),
     "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 110)),
     "Mob": StatusContent(text="Empty room", size=24, coords=(650, 330), bold=True),
-    "MobHP": StatusContent(text="", size=24, coords=(650, 350), bold=True),
-    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 370)),
+    "MobHP": StatusContent(text="", size=20, coords=(650, 350), bold=False),
+    "MobAttack": StatusContent(text="", size=20, coords=(650, 370), bold=False),
+    "MobDamage": StatusContent(text="", size=20, coords=(650, 390), bold=False),
+    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 410)),
     "MobAction": StatusContent(text="", size=16, coords=(650, 310)),
     "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(650, 130))
 }
@@ -84,18 +86,12 @@ while run:  #main loop
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 if gamestate == 2:
-                    roomAction(gamecomponents, room_mob)
-                    if gamestate == 1:
-                        gamestate = 2
-                    else:
-                        gamestate = 1
+                    gamecomponent, rb = roomAction(gamecomponents, room_mob)
+                    room_mob = rb
             else:
                 pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
-                gamecomponents, room_mob, redraw = move(gamestate, pressed_key, gamecomponents)
-                if gamestate == 1:
-                    gamestate = 2
-                else:
-                    gamestate = 1
+                gamecomponents, room_mob, redraw, gs = move(gamestate, pressed_key, gamecomponents)
+                gamestate = gs
 
     gamecomponents['statuscontent']['Gamestate'].setText("Gamestate: {}".format(gamestate))
         
