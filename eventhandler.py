@@ -25,7 +25,7 @@ def hurtPlayer(statusbar, statuscontent, player, damage):
     statuscontent["HP"].setText("HP {:.0f}".format(player.getHP()))
 
 def move(gamestate, pressed_key, gc):
-    # room_mob = {}
+    room_mob = None
     redraw = False
     gamestate = 1
     if pressed_key >= 0:      

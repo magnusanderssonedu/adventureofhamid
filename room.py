@@ -60,7 +60,7 @@ class Room:
             # get the nothing-mob
             mob = mobdict[0]
             self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], mob['loot'], mob['name'], mob['category'])
-        print("room->getMob->self.room_mob", self.room_mob)
+        # print("room->getMob->self.room_mob", self.room_mob)
         return self.room_mob
     
     def getRoomWalls(self):
