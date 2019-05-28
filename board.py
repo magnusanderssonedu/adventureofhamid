@@ -67,6 +67,10 @@ class Board:
         """Supposed to be called from game to get a certain rooms mob"""
         room_index = self.getRoomIndex(room_id)
         return self.rooms[room_index].getMob()
+    
+    def setNoMob(self, room_id):
+        room_index = self.getRoomIndex(room_id)
+        self.rooms[room_index].setNoMob()
 
     def getTiles(self):
         return self.tiles

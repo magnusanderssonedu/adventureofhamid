@@ -1,4 +1,5 @@
 from tile import Tile
+from mob import Mob
 from mobdict import mobdict
 import random
 
@@ -9,6 +10,7 @@ class Room:
     tile_floor = ""
     hasmob = True
     mob = {}
+    room_mob = None
     def __init__(self, room_id, neigbouring_rooms, tile_floor, hasmob=True):
         self.room_id = room_id
         self.tile_holder = []
@@ -16,6 +18,7 @@ class Room:
         self.neigbouring_rooms = neigbouring_rooms
         self.hasmob = hasmob
         self.mob = {}
+        self.room_mob = None
 
     def enterRoom(self):
         """This is called from the board when a player enters the room"""
@@ -37,12 +40,18 @@ class Room:
     def getTile(self):
         return self.tile_holder[0]
 
+    def setNoMob(self):
+        self.hasmob = False
+
     def getMob(self):
         """Get this rooms mob"""
+
+
         # if this room is supposed to have a mob but doesn't yet, find one randomly
         if self.hasmob and not self.mob:
             mobkey = random.choice(list(mobdict.keys()))
             mob = mobdict[mobkey]
+            self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], mob['loot'], mob['name'], mob['category'])
         # else if this room is supposed to have a mob and already has one, get that one
         elif self.hasmob and self.mob:
             mob = self.mob
@@ -50,7 +59,9 @@ class Room:
         else:
             # get the nothing-mob
             mob = mobdict[0]
-        return mob
+            self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], mob['loot'], mob['name'], mob['category'])
+        # print("room->getMob->self.room_mob", self.room_mob)
+        return self.room_mob
     
     def getRoomWalls(self):
         """Get this rooms walls"""

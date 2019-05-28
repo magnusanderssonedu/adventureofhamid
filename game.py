@@ -4,6 +4,8 @@ from board import Board
 from status import Status, StatusContent, StatusContentBar
 from drawhelper import DrawHelper
 
+from eventhandler import move, roomAction
+
 
 
 
@@ -25,31 +27,12 @@ def id_keys():
         hurtPlayer()
     return -1
 
-def key_diff(cur,pres): #returns difference between two keys using the key-tuple
-    return postuple(cur) - postuple(pres)
-
-def postuple(i):    #returns specific key from tuple
-    return (1,2,3,4,5,6)[i]
-
 thePlayer = Player()
 theBoard = Board()
 
-def hurtPlayer():
-    #this method is only for testing the HP bar
-    thePlayer.setHP(thePlayer.getHP()-2)
-    theStatusBars["HP"].setValue(thePlayer.getHP()/100.0)
-    theStatusContent["HP"].setText("HP {:.0f}".format(thePlayer.getHP()))
 
-def possibleMoves(x,y):
-    #take it easy, I made the list in Excel
-    validmove = (('-,3,-,2','-,4,1,3','-,5,2,4','-,6,3,5','-,1,4,6','-,2,5,-'),
-('1,5,-,4','2,6,3,5','3,1,4,6','4,2,5,1','5,3,6,2','6,4,1,-'),
-('3,1,-,6','4,2,5,1','5,3,6,2','6,4,1,3','1,5,2,4','2,6,3,-'),
-('5,3,-,2','6,4,1,3','1,5,2,4','2,6,3,5','3,1,4,6','4,2,5,-'),
-('1,5,-,4','2,6,3,5','3,1,4,6','4,2,5,1','5,3,6,2','6,4,1,-'),
-('3,-,-,6','4,-,5,1','5,-,6,2','6,-,1,3','1,-,2,4','2,-,3,-'))
 
-    return validmove[y][x]
+
 
 # Entering first room and setting tile
 theBoard.enter_room(thePlayer.relcoords(), hasmob=False)
@@ -60,12 +43,15 @@ theStatus = Status((630,0),(830,630),(0,0,0))
 theStatusContent = {
     "HP":   StatusContent(text="HP 100", size=24, coords=(650,20)),
     "Throw":  StatusContent(text="Throw die", size=24, coords=(650,80)),
-    "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,200)),
-    "Exits":    StatusContent(text="Exits: e s", size=24, coords=(650, 250)),
-    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 270)),
-    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 350), bold=True),
-    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 370)),
-    "MobAction": StatusContent(text="", size=16, coords=(650, 310))
+    "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,50)),
+    "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 110)),
+    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 330), bold=True),
+    "MobHP": StatusContent(text="", size=20, coords=(650, 350), bold=False),
+    "MobAttack": StatusContent(text="", size=20, coords=(650, 370), bold=False),
+    "MobDamage": StatusContent(text="", size=20, coords=(650, 390), bold=False),
+    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 410)),
+    "MobAction": StatusContent(text="", size=16, coords=(650, 310)),
+    "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(650, 130))
 }
 
 theStatusBars = {
@@ -73,72 +59,102 @@ theStatusBars = {
     }
 run = True
 
+gamecomponents ={
+    'board': theBoard,
+    'player': thePlayer,
+    'statuscontent': theStatusContent,
+    'statusbar': theStatusBars
+}
+
 # Set the order of the Objects to be drawn
 theDrawHelper = DrawHelper([theBoard,thePlayer,theStatus])
 theDrawHelper.addObjects([v for v in theStatusBars.values()])
 theDrawHelper.addObjects([v for v in theStatusContent.values()])
-ReDraw = True   #boolean to minimize number of Blits
+redraw = True   #boolean to minimize number of Blits
 
 gamestate = 1
+room_mob = {}
 room_mob_list = []
 while run:  #main loop
 
     for event in pygame.event.get():    #event sniffer
         if event.type == pygame.QUIT:
             run = False
-        if gamestate == 1:
-            if event.type == pygame.KEYDOWN:    #handeling key event
-                if not key_down:    #the player token will be constantly triggering this event, so just check if the token is moved to save time
-                    pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
-                    if pressed_key >= 0:
-                        key_down = True
-                        move = (0,0)
-                        if theBoard.get_current_tile != pressed_key:
-                            #check for the difference between last key and pressed key
-                            if key_diff(theBoard.get_current_tile(),pressed_key) == -1 or key_diff(theBoard.get_current_tile(),pressed_key) == 5: #moved_right
-                                move=(1,0)
-                            if key_diff(theBoard.get_current_tile(),pressed_key) == 1 or key_diff(theBoard.get_current_tile(),pressed_key) == -5:  #moved_left
-                                move=(-1,0)
-                            if key_diff(theBoard.get_current_tile(),pressed_key) == -2 or key_diff(theBoard.get_current_tile(),pressed_key) == 4:  #moved_down
-                                move=(0,1)
-                            if key_diff(theBoard.get_current_tile(),pressed_key) == 2 or key_diff(theBoard.get_current_tile(),pressed_key) == -4:  #moved_up
-                                move=(0,-1)
-                            if theBoard.is_validmove(move, thePlayer.relcoords()):
-                                thePlayer.move(move)
-                                theStatusContent["Coords"].setText("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
-                                theBoard.set_current_tile(pressed_key)
-                                room_mob = theBoard.enter_room(thePlayer.relcoords())
-                                # room_mob_list.append(room_mob)
-                                theStatusContent['Mob'].setText(room_mob["name"])
-                                theStatusContent['MobDesc'].setText(room_mob['description'])
-                                theStatusContent["Exits"].setText("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
-                                theStatusContent["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
-                                ReDraw = True
-                                gamestate = 2
-                            else:
-                                ReDraw = False
-            if event.type == pygame.KEYUP:
-                key_down = False    #key up means player token is moved
-            
-        elif gamestate == 2:
-            theStatusContent['MobAction'].setText("")
-            if room_mob['category'] == 'monster':
-                print("Anfalla", room_mob['name'])
-                theStatusContent['MobAction'].setText("Attack {}?\nPress enter".format(room_mob['name']))
-                
-            elif room_mob['category'] == 'treasure':
-                print("Vill du öppna upp skatten")
-                theStatusContent['MobAction'].setText("Open {}?\nPress enter".format(room_mob['name']))
-            elif room_mob['category'] == 'trap':
-                print("IT'S A TRAP")
-                
-            gamestate = 1
-            key_down = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                if gamestate == 2:
+                    gamecomponent, rb, gs = roomAction(gamecomponents, room_mob)
+                    room_mob = rb
+                    gamestate = gs
+            else:
+                pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
+                gamecomponents, rb, redraw, gs = move(gamestate, pressed_key, gamecomponents)
+                room_mob = rb
+                gamestate = gs
 
+    gamecomponents['statuscontent']['Gamestate'].setText("Gamestate: {}".format(gamestate))
+        
+    if redraw:
+        theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
+        pygame.display.update()
         
 
-    if ReDraw:    #only draw
-        theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
-    pygame.display.update()
+    
 
 pygame.quit()
+
+
+#  if gamestate == 1:
+#             if event.type == pygame.KEYDOWN:    #handeling key event
+#                 if not key_down:    #the player token will be constantly triggering this event, so just check if the token is moved to save time
+#                     pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
+#                     if pressed_key >= 0:
+#                         key_down = True
+#                         move = (0,0)
+#                         if theBoard.get_current_tile != pressed_key:
+#                             #check for the difference between last key and pressed key
+#                             if key_diff(theBoard.get_current_tile(),pressed_key) == -1 or key_diff(theBoard.get_current_tile(),pressed_key) == 5: #moved_right
+#                                 move=(1,0)
+#                             if key_diff(theBoard.get_current_tile(),pressed_key) == 1 or key_diff(theBoard.get_current_tile(),pressed_key) == -5:  #moved_left
+#                                 move=(-1,0)
+#                             if key_diff(theBoard.get_current_tile(),pressed_key) == -2 or key_diff(theBoard.get_current_tile(),pressed_key) == 4:  #moved_down
+#                                 move=(0,1)
+#                             if key_diff(theBoard.get_current_tile(),pressed_key) == 2 or key_diff(theBoard.get_current_tile(),pressed_key) == -4:  #moved_up
+#                                 move=(0,-1)
+#                             if theBoard.is_validmove(move, thePlayer.relcoords()):
+#                                 thePlayer.move(move)
+#                                 theStatusContent["Coords"].setText("({},{})".format(thePlayer.relcoords()[0],thePlayer.relcoords()[1]))
+#                                 theBoard.set_current_tile(pressed_key)
+#                                 room_mob = theBoard.enter_room(thePlayer.relcoords())
+#                                 # room_mob_list.append(room_mob)
+#                                 theStatusContent['Mob'].setText(room_mob["name"])
+#                                 theStatusContent['MobDesc'].setText(room_mob['description'])
+#                                 theStatusContent["Exits"].setText("Exits: " + theBoard.room_exits(thePlayer.relcoords()))
+#                                 theStatusContent["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(thePlayer.relcoords()[0],thePlayer.relcoords()[1])))
+#                                 ReDraw = True
+#                                 gamestate = 2
+#                             else:
+#                                 ReDraw = False
+#             if event.type == pygame.KEYUP:
+#                 key_down = False    #key up means player token is moved
+            
+#         elif gamestate == 2:
+            
+#             theStatusContent['MobAction'].setText("")
+#             if room_mob['category'] == 'monster':
+#                 print("Anfalla", room_mob['name'])
+#                 theStatusContent['MobAction'].setText("Attack {}?\nPress enter".format(room_mob['name']))
+#                 if action:
+#                     print("Charge")
+#                     action = False
+#             elif room_mob['category'] == 'treasure':
+#                 print("Vill du öppna upp skatten")
+#                 theStatusContent['MobAction'].setText("Open {}?\nPress enter".format(room_mob['name']))
+#             elif room_mob['category'] == 'trap':
+#                 print("IT'S A TRAP")
+                
+#             gamestate = 1
+#             key_down = False
+    # if ReDraw:    #only draw
+    #         theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
+    #     pygame.display.update()
