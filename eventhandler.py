@@ -28,7 +28,7 @@ def move(gamestate, pressed_key, gc):
     room_mob = None
     redraw = False
     gamestate = 1
-    if pressed_key >= 0:      
+    if pressed_key >= 0:
         move = (0,0)
         if gc['board'].get_current_tile != pressed_key:
             #check for the difference between last key and pressed key
@@ -63,8 +63,8 @@ def move(gamestate, pressed_key, gc):
                     gc['statuscontent']['MobHP'].setText("")
                     gc['statuscontent']['MobAttack'].setText("")
                     gc['statuscontent']['MobDamage'].setText("")
-                
-                
+
+
                 if room_mob.category == 'trap':
                     dice = random.randint(1, 100)
                     print("Nu kommer jag till en fälla")
@@ -86,8 +86,8 @@ def roomAction(gc, room_mob):
     # if mob is a monster when you press enter the player attacks and get attacked back if the mob is still alive
     if room_mob.category == 'monster':
         gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob.name))
-        
-        damage = random.randint(1,2)
+
+        damage = random.randint(1,gc['player'].getAttack())
         left = room_mob.hp - damage
 
         # if mob has any hp left set new hp to that mob and let the mob hit back at the player

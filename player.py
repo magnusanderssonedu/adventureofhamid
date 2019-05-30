@@ -2,6 +2,10 @@ import pygame
 import os
 
 class Player:
+    #Player constants
+    MAXHP = 100.0
+    MAXLOOT = 6
+
     #Player variables
     x = 0
     y = 0
@@ -13,6 +17,9 @@ class Player:
     vely = 105  #height+borderheight (was originally 35)
     hp = 100.0
     me = pygame.image.load(os.path.join('data', 'player.png'))
+    attack = 2
+    inventory = []
+    mobChance = 1
 
     def __init__(self,coords=(0,0)):
         self.relx = 0
@@ -33,6 +40,8 @@ class Player:
         self.hp = newhp
         if self.hp < 0:
             self.hp = 0
+        if self.hp > self.MAXHP:
+            self.hp = self.MAXHP
 
     def getHP(self):
         return self.hp
@@ -42,3 +51,21 @@ class Player:
 
     def relcoords(self):
         return (self.relx,self.rely)
+
+    def getAttack(self):
+        return self.attack
+
+    def setAttack(self,attack):
+        self.attack = attack
+
+    def addInventory(self, LootObj):
+        if len(self.inventory) == self.MAXLOOT:
+            self.inventory[0].removeItem()
+            self.inventory.pop(0)
+        self.inventory.append(LootObj)
+
+    def setMobChance(self,mobChance):
+        self.mobChance = mobChance
+
+    def getMobChance(self):
+        return self.mobChance

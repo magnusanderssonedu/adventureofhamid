@@ -1,6 +1,6 @@
 import random
-chestloot = ["gold", "torch", "healing water", "rope"]
-monsterloot = ["gold", "jewlery", "food", "stone", "rope", "dagger"]
+chestloot = ["gold", "torch", "healing water", "sword"]
+monsterloot = ["gold", "jewlery", "food", "stone", "dagger"]
 mobdict = {
     0: {
         "category": "nothing",
@@ -62,7 +62,9 @@ mobdict = {
         "category": "treasure",
         "name": "A Chest",
         "description": """You find a chest full of
-        ...what?""",
+        ...what?
+        
+        Press action to open.""",
         "hp": 0,
         "killable": True,
         "aggressive": False,
