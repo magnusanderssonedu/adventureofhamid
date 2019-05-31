@@ -22,6 +22,18 @@ class Status:
     def coords(self):
         return (self.statuscoords[0],self.statuscoords[1])
 
+class StatusImage:
+    image = ""
+    coords = (0,0)
+    def __init__(self, image="", coords=(0,0)):
+        self.image = image
+        self.coords = coords
+
+    def setImage(self, image):
+        self.image = image
+
+    def draw(self, surface):
+        surface.blit(pygame.image.load(os.path.join('data/statusbarimages', self.image)), (self.coords[0], self.coords[1]))
 
 class StatusContent:
     textArray = []

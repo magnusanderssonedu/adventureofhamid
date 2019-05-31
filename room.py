@@ -45,8 +45,6 @@ class Room:
 
     def getMob(self):
         """Get this rooms mob"""
-
-
         # if this room is supposed to have a mob but doesn't yet, find one randomly
         if self.hasmob and not self.mob:
             mobkey = random.choice(list(mobdict.keys()))

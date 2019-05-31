@@ -55,11 +55,23 @@ def move(gamestate, pressed_key, gc):
                 room_mob = gc['board'].enter_room(gc['player'].relcoords())
                 # room_mob_list.append(room_mob)
                 gc['statuscontent']['Mob'].setText(room_mob.name)
-                if room_mob.category == 'monster' or room_mob.category == 'trap':
+                if room_mob.category == 'monster':
+                    s = pygame.mixer.Sound('thunder.ogg')
+                    empty_channel = pygame.mixer.find_channel()
+                    empty_channel.play(s)
+                    # pygame.mixer.music.load('thunder.ogg')
+                    # pygame.mixer.music.play()
+                    gc['statuscontent']['Image'].setImage("swords_crossing_stone.png")
+                    gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
+                    gc['statuscontent']['MobAttack'].setText("Attack: " + str(room_mob.attacktrigger*100)+"%")
+                    gc['statuscontent']['MobDamage'].setText("Damage: " + str(room_mob.damage))
+                elif room_mob.category == 'trap':
+                    gc['statuscontent']['Image'].setImage("arrows.png")
                     gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
                     gc['statuscontent']['MobAttack'].setText("Attack: " + str(room_mob.attacktrigger*100)+"%")
                     gc['statuscontent']['MobDamage'].setText("Damage: " + str(room_mob.damage))
                 else:
+                    gc['statuscontent']['Image'].setImage("emptyroom.png")
                     gc['statuscontent']['MobHP'].setText("")
                     gc['statuscontent']['MobAttack'].setText("")
                     gc['statuscontent']['MobDamage'].setText("")

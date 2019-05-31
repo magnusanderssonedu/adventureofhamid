@@ -1,7 +1,8 @@
 import pygame
+import os
 from player import Player
 from board import Board
-from status import Status, StatusContent, StatusContentBar
+from status import Status, StatusContent, StatusContentBar, StatusImage
 from drawhelper import DrawHelper
 
 from eventhandler import move, roomAction
@@ -51,8 +52,11 @@ theStatusContent = {
     "MobDamage": StatusContent(text="", size=20, coords=(650, 390), bold=False),
     "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 410)),
     "MobAction": StatusContent(text="", size=16, coords=(650, 310)),
-    "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(650, 130))
+    "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(650, 130)),
+    "Image": StatusImage(image='emptyroom.png', coords=(680, 150))
 }
+
+
 
 theStatusBars = {
     "HP":   StatusContentBar(color=(230,0,0),bgcolor=(40,40,40),dimensions=(170,20),coords=(645,16))
@@ -71,6 +75,11 @@ theDrawHelper = DrawHelper([theBoard,thePlayer,theStatus])
 theDrawHelper.addObjects([v for v in theStatusBars.values()])
 theDrawHelper.addObjects([v for v in theStatusContent.values()])
 redraw = True   #boolean to minimize number of Blits
+
+pygame.mixer.init()
+# pygame.mixer.music.load(os.path.join('data/sounds', 'waterdrops.mp3'))
+pygame.mixer.music.load('waterdrops.ogg')
+pygame.mixer.music.play(-1)
 
 gamestate = 1
 room_mob = {}
