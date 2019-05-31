@@ -17,7 +17,7 @@ class Player:
     vely = 105  #height+borderheight (was originally 35)
     hp = 100.0
     me = pygame.image.load(os.path.join('data', 'player.png'))
-    attack = 2
+    attack = 1
     inventory = []
     mobChance = 1
 
@@ -35,6 +35,8 @@ class Player:
 
     def draw(self,surface):
         surface.blit(self.me, (self.x,self.y))
+        for item in self.inventory:
+            item.draw(surface)
 
     def setHP(self, newhp):
         self.hp = newhp
@@ -53,19 +55,42 @@ class Player:
         return (self.relx,self.rely)
 
     def getAttack(self):
-        return self.attack
-
-    def setAttack(self,attack):
-        self.attack = attack
+        #Returns the attack strength for player. If item in inventory effecting attack, add the highest value to the attack stat.
+        effect = 0
+        for item in self.inventory:
+            if item.effect[0] == "attack" and item.effect[1] > effect:
+                effect = item.effect[1]
+        return self.attack + effect
 
     def addInventory(self, LootObj):
-        if len(self.inventory) == self.MAXLOOT:
-            self.inventory[0].removeItem()
-            self.inventory.pop(0)
-        self.inventory.append(LootObj)
-
-    def setMobChance(self,mobChance):
-        self.mobChance = mobChance
+        #add loot to inventory. If inventory is full pop the oldest item to get room for the newest.
+        if LootObj.inventoryitem:
+            if len(self.inventory) == self.MAXLOOT:
+                self.inventory.pop(0)
+                n = 0
+                for item in self.inventory:   #shift places of every inventory item in statusbar
+                    item.setRelCoords(n)
+                    n += 1
+            self.inventory.append(LootObj)
+            self.inventory[len(self.inventory)-1].setRelCoords(len(self.inventory)-1)   #set coordinates in statusbar
+        else:
+            effect, value = LootObj.getEffect()
+            if effect == "hp":
+                self.hp = self.hp + value
 
     def getMobChance(self):
-        return self.mobChance
+        #Returns the mobChance for player. If item in inventory effecting mobChance, choose the lowest mobChance
+        effect = 1.0
+        for item in self.inventory:
+            if item.effect[0] == "less mobs" and item.effect[1] < effect:
+                effect = item.effect[1]
+        return effect
+
+    def reset(self):
+        self.relx = 0
+        self.rely = 0
+        self.move((0,0))
+        self.hp = 100.0
+        self.attack = 1
+        self.inventory = []
+        self.mobChance = 1

@@ -52,7 +52,7 @@ def move(gamestate, pressed_key, gc):
                 gc['player'].move(move)
                 gc['statuscontent']["Coords"].setText("({},{})".format(gc['player'].relcoords()[0],gc['player'].relcoords()[1]))
                 gc['board'].set_current_tile(pressed_key)
-                room_mob = gc['board'].enter_room(gc['player'].relcoords())
+                room_mob = gc['board'].enter_room(gc['player'].relcoords(),gc['player'].getMobChance())
                 # room_mob_list.append(room_mob)
                 gc['statuscontent']['Mob'].setText(room_mob.name)
                 if room_mob.category == 'monster' or room_mob.category == 'trap':
@@ -73,8 +73,12 @@ def move(gamestate, pressed_key, gc):
                         print("Jag blev visst skadad")
                 gc['statuscontent']['MobDesc'].setText(room_mob.description)
                 gc['statuscontent']["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(gc['player'].relcoords()[0],gc['player'].relcoords()[1])))
+                gc['statuscontent']['MobAction'].setText("")
+                gc['statuscontent']['Attack'].setText("Atk {}".format(gc['player'].getAttack()))
                 redraw = True
                 gamestate = 2
+                if gc['player'].relcoords() == (5,5):
+                    gamestate = 3
 
     return gc, room_mob, redraw, gamestate
 
@@ -98,19 +102,33 @@ def roomAction(gc, room_mob):
             dice = random.randint(1, 100)
             if dice <= room_mob.attacktrigger*100:
                 hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
+                if gc['player'].getHP() == 0:
+                    gamestate = -1
         else:
             room_mob.setHP(0)
             gc['board'].setNoMob(gc['player'].relcoords())
             gc['statuscontent']['MobHP'].setText("DEAD!")
+            gc['statuscontent']['MobAction'].setText("Monster dropped {}".format(room_mob.getLootDescription()))
+            gc['player'].addInventory(room_mob.getLoot())
             gamestate = 1
     elif room_mob.category == 'treasure':
         print("OPEN TREASURE")
-        gc['statuscontent']['MobAction'].setText("Open {}?\nPress enter".format(room_mob['name']))
+        gc['statuscontent']['MobAction'].setText("You got {}".format(room_mob.getLootDescription()))
+        gc['player'].addInventory(room_mob.getLoot())
+        gc['board'].setNoMob(gc['player'].relcoords())
     # elif room_mob['category'] == 'trap':
     #     dice = random.randint(1, 100)
     #     print("Nu kommer jag till en fälla")
     #     if dice <= room_mob.attacktrigger*100:
     #         hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
     #         print("Jag blev visst skadad")
-
+    gc['statuscontent']['Attack'].setText("Atk {}".format(gc['player'].getAttack()))
     return gc, room_mob, gamestate
+
+def resetGame(gc):
+    """you will end up here if when you press enter on a splash screen - reseting the game"""
+    gc['player'].reset()
+    gc['board'].reset()
+    gc['board'].enter_room(gc['player'].relcoords(), hasmob=False)
+    gamestate = 1
+    return gc, gamestate

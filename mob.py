@@ -17,7 +17,7 @@ class Mob:
     name = "Eskil"
     category = "ruggig"
     me = None #image of the mob. Use keywords from picpicker to choose sprite
-    loot = []
+    loot = None
     picpicker = {
         "mine": "mob_mine.png",
         "trap": "mob_trap.png",
@@ -73,3 +73,9 @@ class Mob:
 
     def setHP(self, value):
         self.hp = value
+
+    def getLoot(self):
+        return self.loot
+
+    def getLootDescription(self):
+        return self.loot.getDescription()

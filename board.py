@@ -60,14 +60,14 @@ class Board:
             room.enterRoom()
             self.rooms[room_index] = room
             self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getRoomWalls(), room.getRoomFloor()))
-        
+
         return self.rooms[room_index].getMob()
 
     def getRoomsMob(self, room_id):
         """Supposed to be called from game to get a certain rooms mob"""
         room_index = self.getRoomIndex(room_id)
         return self.rooms[room_index].getMob()
-    
+
     def setNoMob(self, room_id):
         room_index = self.getRoomIndex(room_id)
         self.rooms[room_index].setNoMob()
@@ -161,3 +161,9 @@ class Board:
         x, y = room_id
         room_index = str(x) + str(y)
         return room_index
+
+    def reset(self):
+        self.current_tile = 0
+        random.shuffle(floors)
+        self.tile_floors = floors
+        self.tiles = []

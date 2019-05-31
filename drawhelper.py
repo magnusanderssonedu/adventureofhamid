@@ -8,9 +8,8 @@ class DrawHelper:
     will call the draw methods in the objects by order.
     """
 
-    drawObjectsList = []
-
     def __init__(self, listOfObjects=[]):
+        self.drawObjectsList = []
         if len(listOfObjects) > 0:
             self.addObjects(listOfObjects)
 
@@ -18,6 +17,10 @@ class DrawHelper:
         surface.fill((0,0,0))
         for objects in self.drawObjectsList:
             objects.draw(surface)
+
+    def drawOne(self, surface, index):
+        surface.fill((0,0,0))
+        self.drawObjectsList[index].draw(surface)
 
     def addObjects(self, listOfObjects):
         for objects in listOfObjects:

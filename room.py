@@ -1,6 +1,7 @@
 from tile import Tile
 from mob import Mob
 from mobdict import mobdict
+from loot import Loot, lootdict
 import random
 
 class Room:
@@ -53,9 +54,13 @@ class Room:
                 mobkey = random.choice(list(mobdict.keys()))
                 mob = mobdict[mobkey]
             else:
-                mob = mobdict[0]
-                self.hasmob = False
-            self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], mob['loot'], mob['name'], mob['category'])
+                chanceOfChest = random.choice([0,0,0,0,3]) #one fifth chance to get a Chest.
+                mob = mobdict[chanceOfChest]
+                if chanceOfChest == 0:
+                    self.hasmob = False
+            lootname = lootdict[mob['loot']]
+            loot = Loot(lootname['name'],lootname['description'],lootname['sprite'],lootname['effect'],lootname['inventoryitem'])
+            self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], loot, mob['name'], mob['category'])
         # else if this room is supposed to have a mob and already has one, get that one
         elif self.hasmob and self.mob:
             mob = self.mob
