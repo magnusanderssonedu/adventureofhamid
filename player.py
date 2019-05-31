@@ -17,14 +17,14 @@ class Player:
     vely = 105  #height+borderheight (was originally 35)
     hp = 100.0
     me = pygame.image.load(os.path.join('data', 'player.png'))
-    attack = 1
-    inventory = []
-    mobChance = 1
 
     def __init__(self,coords=(0,0)):
         self.relx = 0
         self.rely = 0
         self.move(coords)
+        self.attack = 1
+        self.inventory = []
+        self.mobChance = 1
 
     def move(self,movecords):
         """Sätter relx, rely (koordinaterna) samt x, y som är antalet pixlar"""
@@ -76,7 +76,7 @@ class Player:
         else:
             effect, value = LootObj.getEffect()
             if effect == "hp":
-                self.hp = self.hp + value
+                self.setHP(self.hp + value)
 
     def getMobChance(self):
         #Returns the mobChance for player. If item in inventory effecting mobChance, choose the lowest mobChance

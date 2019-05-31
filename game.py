@@ -3,15 +3,12 @@ from player import Player
 from board import Board
 from status import Status, StatusContent, StatusContentBar, StatusContentImage
 from drawhelper import DrawHelper
-from eventhandler import move, roomAction, resetGame
+from eventhandler import move, roomAction, hurtPlayer
 
 pygame.init()
 
 win = pygame.display.set_mode((830,630))
 pygame.display.set_caption("Adventure boardgame")
-
-#main variables
-key_down = False
 
 def id_keys():
     keys = pygame.key.get_pressed() #tuple with all keys represented as 0 or 1 with 1 for pressed
@@ -19,20 +16,14 @@ def id_keys():
     for key in available_keys:
         if keys[key]:
             return available_keys.index(key) #return between 0-5 depending on key pressed
-    if keys[pygame.K_0]: #ONLY FOR PLAYING AROUND - I WANT TO HURT THE PLAYER! Press zero to hurt player
-        hurtPlayer()
-    return -1
 
-thePlayer = Player()
-theBoard = Board()
-
-
-# Entering first room and setting tile
-theBoard.enter_room(thePlayer.relcoords(), hasmob=False)
-
-
-# theStatus = Status((804,0),(246,630),(0,0,0))
+#main variables and some essential game components
+key_down = False
 theStatus = Status((630,0),(830,630),(0,0,0))
+thePlayer = Player()
+run = True
+redraw = True   #boolean to minimize number of Blits
+
 theStatusContent = {
     "HP":   StatusContent(text="HP 100", size=24, coords=(650,20)),
     "Attack":   StatusContent(text="Atk 1", size=24, coords=(720,20)),
@@ -60,23 +51,6 @@ theStatusImages = {
     "Inventory5":   StatusContentImage(coords=(740,240),sprite="loot_nothing.png")
     }
 
-run = True
-redraw = True   #boolean to minimize number of Blits
-
-gamecomponents ={
-    'board': theBoard,
-    'player': thePlayer,
-    'statuscontent': theStatusContent,
-    'statusbar': theStatusBars
-}
-
-# Set the order of the Objects to be drawn
-theDrawHelper = DrawHelper([theBoard,theStatus])
-theDrawHelper.addObjects([v for v in theStatusBars.values()])
-theDrawHelper.addObjects([v for v in theStatusImages.values()])
-theDrawHelper.addObjects([v for v in theStatusContent.values()])
-theDrawHelper.addObject(thePlayer)
-
 splashImages = {
     "GameOver": StatusContentImage(coords=(0,0), sprite="splash_gameover.png"),
     "Winning" : StatusContentImage(coords=(0,0), sprite="splash_win.png"),
@@ -98,8 +72,30 @@ while run:  #main loop
                     gamestate = 0
                     redraw = True
                 elif gamestate == 0:
-                    gamecomponent, gs = resetGame(gamecomponents)
-                    gamestate = gs
+                    thePlayer = None
+                    thePlayer = Player()
+                    theBoard = None
+                    theBoard = Board()
+                    theBoard.enter_room(thePlayer.relcoords(), hasmob=False)
+                    # Set the order of the Objects to be drawn
+                    theDrawHelper = None
+                    theDrawHelper = DrawHelper()
+                    theDrawHelper.addObjects([theBoard,theStatus])
+                    theDrawHelper.addObjects([v for v in theStatusBars.values()])
+                    theDrawHelper.addObjects([v for v in theStatusImages.values()])
+                    theDrawHelper.addObjects([v for v in theStatusContent.values()])
+                    theDrawHelper.addObject(thePlayer)
+                    gamestate = 1
+                    gamecomponents ={
+                        'board': theBoard,
+                        'player': thePlayer,
+                        'statuscontent': theStatusContent,
+                        'statusbar': theStatusBars,
+                        'statusimages':theStatusImages,
+                        'drawhelper': theDrawHelper,
+                        'status': theStatus
+                    }
+                    #hurtPlayer(theStatusBars, theStatusContent, thePlayer, 0)
                     redraw = True
                 elif gamestate == 2:
                     gamecomponent, rb, gs = roomAction(gamecomponents, room_mob)
@@ -113,7 +109,10 @@ while run:  #main loop
                     room_mob = rb
                     gamestate = gs
 
-    gamecomponents['statuscontent']['Gamestate'].setText("Gamestate: {}".format(gamestate))
+    if thePlayer.getHP() == 0 and gamestate in [1,2]:  #if player gets to 0 HP its Game Over
+        gamestate = -1
+
+    theStatusContent['Gamestate'].setText("Gamestate: {}".format(gamestate))
 
     if gamestate == 0:      #Opening Splash
         theSplashScreens.drawOne(win,2)
@@ -128,6 +127,8 @@ while run:  #main loop
         pygame.display.update()
         redraw = False
     elif gamestate == 1 or gamestate == 2:
+        theStatusBars["HP"].setValue(thePlayer.getHP()/100.0)
+        theStatusContent["HP"].setText("HP {:.0f}".format(thePlayer.getHP()))
         if redraw:
             theDrawHelper.draw(win) #DrawHelper manages and draws all the objects in order on the win-surface
             pygame.display.update()

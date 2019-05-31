@@ -1,5 +1,8 @@
 import pygame
 import random
+from player import Player
+from board import Board
+from drawhelper import DrawHelper
 
 def key_diff(cur,pres): #returns difference between two keys using the key-tuple
     return postuple(cur) - postuple(pres)
@@ -18,11 +21,9 @@ def possibleMoves(x,y):
 
     return validmove[y][x]
 
-def hurtPlayer(statusbar, statuscontent, player, damage):
+def hurtPlayer(player, damage):
     #this method is only for testing the HP bar
     player.setHP(player.getHP()-damage)
-    statusbar["HP"].setValue(player.getHP()/100.0)
-    statuscontent["HP"].setText("HP {:.0f}".format(player.getHP()))
 
 def move(gamestate, pressed_key, gc):
     room_mob = None
@@ -45,7 +46,7 @@ def move(gamestate, pressed_key, gc):
                 old_room_mob = gc['board'].getRoomsMob(gc['player'].relcoords())
                 try:
                     if old_room_mob.category == 'monster':
-                        hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], old_room_mob.damage*2)
+                        hurtPlayer(gc['player'], old_room_mob.damage*2)
                 except Exception as e:
                     print("Error", e)
 
@@ -69,7 +70,7 @@ def move(gamestate, pressed_key, gc):
                     dice = random.randint(1, 100)
                     print("Nu kommer jag till en fälla")
                     if dice <= room_mob.attacktrigger*100:
-                        hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
+                        hurtPlayer(gc['player'], room_mob.damage)
                         print("Jag blev visst skadad")
                 gc['statuscontent']['MobDesc'].setText(room_mob.description)
                 gc['statuscontent']["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(gc['player'].relcoords()[0],gc['player'].relcoords()[1])))
@@ -101,9 +102,7 @@ def roomAction(gc, room_mob):
             gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
             dice = random.randint(1, 100)
             if dice <= room_mob.attacktrigger*100:
-                hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
-                if gc['player'].getHP() == 0:
-                    gamestate = -1
+                hurtPlayer(gc['player'], room_mob.damage)
         else:
             room_mob.setHP(0)
             gc['board'].setNoMob(gc['player'].relcoords())
@@ -124,11 +123,3 @@ def roomAction(gc, room_mob):
     #         print("Jag blev visst skadad")
     gc['statuscontent']['Attack'].setText("Atk {}".format(gc['player'].getAttack()))
     return gc, room_mob, gamestate
-
-def resetGame(gc):
-    """you will end up here if when you press enter on a splash screen - reseting the game"""
-    gc['player'].reset()
-    gc['board'].reset()
-    gc['board'].enter_room(gc['player'].relcoords(), hasmob=False)
-    gamestate = 1
-    return gc, gamestate

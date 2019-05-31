@@ -37,3 +37,6 @@ class DrawHelper:
 
     def removeObject(self,Object):
         self.drawObjectsList.remove(Object) #remove object by object
+
+    def clearList(self):
+        self.drawObjectsList = []

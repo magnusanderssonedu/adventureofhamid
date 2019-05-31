@@ -9,21 +9,17 @@ class Board:
     #board = pygame.image.load(os.path.join('data', 'board.png'))
     board = pygame.image.load(os.path.join('data', 'boardcobbled6.png')) #alternative board
     boardcoords = (1,1)
-    minmove = (0,0) #top left corner
-    maxmove = (5,5) # bottom right corner - (15,10) originally
-    rooms = {} # rooms visited on the board
-    tiles = [] # list with tuples with this boards all tile_images and corresponding coordinates [(coord, wallimage.png, floorimage.png), ...]
     velx = 105 # pixels per coord in room_id
     vely = 105 # pixels per coord in room_id
-    tile_floors = []
 
     def __init__(self, tile = 0, minmove = (0,0), maxmove = (5,5)):
         if (tile >=0 and tile <=5):
             self.current_tile = tile
         else:
             self.current_tile = 0
-        self.minmove = minmove
-        self.maxmove = maxmove
+        self.rooms = {} # rooms visited on the board
+        self.minmove = minmove #top left corner
+        self.maxmove = maxmove #bottom right corner - (15,10) originally
         random.shuffle(floors)
         self.tile_floors = floors
         self.tiles = []
