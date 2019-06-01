@@ -78,7 +78,7 @@ redraw = True   #boolean to minimize number of Blits
 
 pygame.mixer.init()
 # pygame.mixer.music.load(os.path.join('data/sounds', 'waterdrops.mp3'))
-pygame.mixer.music.load('waterdrops.ogg')
+pygame.mixer.music.load(os.path.join('data/sounds', 'waterdrops.ogg'))
 pygame.mixer.music.play(-1)
 
 gamestate = 1
