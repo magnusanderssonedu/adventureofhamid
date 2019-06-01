@@ -111,7 +111,7 @@ def roomAction(gc, room_mob):
     if room_mob.category == 'monster':
         gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob.name))
         play('jab.ogg')
-        damage = random.randint(1,gc['player'].getAttack())
+        damage = random.randint(1, gc['player'].getAttack())
         left = room_mob.hp - damage
 
         # if mob has any hp left set new hp to that mob and let the mob hit back at the player
@@ -124,11 +124,11 @@ def roomAction(gc, room_mob):
             if dice <= room_mob.attacktrigger*100:
                 time.sleep(0.5)
                 play('chopp.ogg')
-                time.sleep(0.5)
+                hurtPlayer(gc['player'], room_mob.damage)
             else:
                 time.sleep(0.5)
                 play('missed_chopp.ogg')
-                hurtPlayer(gc['player'], room_mob.damage)
+                
         else:
             time.sleep(0.5)
             play('zombie_pain.ogg')
