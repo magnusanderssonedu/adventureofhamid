@@ -91,7 +91,7 @@ def move(gamestate, pressed_key, gc):
                     if dice <= room_mob.attacktrigger*100:
                         hurtPlayer(gc['player'], room_mob.damage)
                         print("Jag blev visst skadad")
-                gc['statuscontent']['MobDesc'].setText(room_mob.description)
+                # gc['statuscontent']['MobDesc'].setText(room_mob.description)
                 gc['statuscontent']["PossibleMoves"].setText("Moves(u,d,l,r): ({})".format(possibleMoves(gc['player'].relcoords()[0],gc['player'].relcoords()[1])))
                 gc['statuscontent']['MobAction'].setText("")
                 gc['statuscontent']['Attack'].setText("Atk {}".format(gc['player'].getAttack()))

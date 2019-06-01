@@ -2,8 +2,7 @@ import pygame
 import os
 from player import Player
 from board import Board
-from status import Status, StatusContent, StatusContentBar, StatusImage
-from status import Status, StatusContent, StatusContentBar, StatusContentImage
+from status import Status, StatusContent, StatusContentBar, StatusImage, StatusContentImage
 from drawhelper import DrawHelper
 from eventhandler import move, roomAction, hurtPlayer
 
@@ -31,13 +30,13 @@ theStatusContent = {
     "Attack":   StatusContent(text="Atk 1", size=24, coords=(720,20)),
     "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,50)),
     "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 70)),
-    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 330), bold=True),
-    "MobHP": StatusContent(text="", size=20, coords=(650, 350), bold=False),
-    "MobAttack": StatusContent(text="", size=20, coords=(650, 370), bold=False),
-    "MobDamage": StatusContent(text="", size=20, coords=(650, 390), bold=False),
-    "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 410)),
-    "MobAction": StatusContent(text="", size=16, coords=(650, 310)),
-    "Image": StatusImage(image='emptyroom.png', coords=(680, 150))
+    "Mob": StatusContent(text="Empty room", size=24, coords=(650, 450), bold=True),
+    "MobHP": StatusContent(text="", size=20, coords=(650, 470), bold=False),
+    "MobAttack": StatusContent(text="", size=20, coords=(650, 490), bold=False),
+    "MobDamage": StatusContent(text="", size=20, coords=(650, 510), bold=False),
+    # "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 430)),
+    "MobAction": StatusContent(text="", size=16, coords=(650, 415)),
+    "Image": StatusImage(image='emptyroom.png', coords=(680, 310)),
     "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(720, 50))
 }
 
