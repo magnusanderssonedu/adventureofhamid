@@ -86,3 +86,14 @@ class StatusContentBar:
         pygame.draw.rect(win, self.bgcolor, [self.coords[0],self.coords[1],self.dimensions[0],self.dimensions[1]])
         #draw foreground
         pygame.draw.rect(win, self.color, [self.coords[0]+1,self.coords[1]+1,self.value*(self.dimensions[0]-2),self.dimensions[1]-2])
+
+class StatusContentImage:
+    coords = (600,20)
+    me = None
+
+    def __init__(self, coords, sprite):
+        self.coords = coords
+        self.me = pygame.image.load(os.path.join('data', sprite))
+
+    def draw(self,surface):
+        surface.blit(self.me, (self.coords[0],self.coords[1]))

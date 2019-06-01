@@ -9,21 +9,17 @@ class Board:
     #board = pygame.image.load(os.path.join('data', 'board.png'))
     board = pygame.image.load(os.path.join('data', 'boardcobbled6.png')) #alternative board
     boardcoords = (1,1)
-    minmove = (0,0) #top left corner
-    maxmove = (5,5) # bottom right corner - (15,10) originally
-    rooms = {} # rooms visited on the board
-    tiles = [] # list with tuples with this boards all tile_images and corresponding coordinates [(coord, wallimage.png, floorimage.png), ...]
     velx = 105 # pixels per coord in room_id
     vely = 105 # pixels per coord in room_id
-    tile_floors = []
 
     def __init__(self, tile = 0, minmove = (0,0), maxmove = (5,5)):
         if (tile >=0 and tile <=5):
             self.current_tile = tile
         else:
             self.current_tile = 0
-        self.minmove = minmove
-        self.maxmove = maxmove
+        self.rooms = {} # rooms visited on the board
+        self.minmove = minmove #top left corner
+        self.maxmove = maxmove #bottom right corner - (15,10) originally
         random.shuffle(floors)
         self.tile_floors = floors
         self.tiles = []
@@ -60,14 +56,14 @@ class Board:
             room.enterRoom()
             self.rooms[room_index] = room
             self.tiles.append(((room_id[0]*self.velx, room_id[1]*self.vely), room.getRoomWalls(), room.getRoomFloor()))
-        
+
         return self.rooms[room_index].getMob()
 
     def getRoomsMob(self, room_id):
         """Supposed to be called from game to get a certain rooms mob"""
         room_index = self.getRoomIndex(room_id)
         return self.rooms[room_index].getMob()
-    
+
     def setNoMob(self, room_id):
         room_index = self.getRoomIndex(room_id)
         self.rooms[room_index].setNoMob()
@@ -161,3 +157,9 @@ class Board:
         x, y = room_id
         room_index = str(x) + str(y)
         return room_index
+
+    def reset(self):
+        self.current_tile = 0
+        random.shuffle(floors)
+        self.tile_floors = floors
+        self.tiles = []

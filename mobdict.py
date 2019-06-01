@@ -1,6 +1,6 @@
 import random
-chestloot = ["gold", "torch", "healing water", "rope"]
-monsterloot = ["gold", "jewlery", "food", "stone", "rope", "dagger"]
+chestloot = ["gold", "torch", "healing water", "sword","jewlery", "food", "stone"]
+monsterloot = ["jewlery", "food", "stone", "dagger"]
 mobdict = {
     0: {
         "category": "nothing",
@@ -13,7 +13,7 @@ mobdict = {
         "attacktrigger": 0,
         "fleetrigger": 0,
         "sprite": "",
-        "loot": []
+        "loot": ""
     },
     1: {
         "category": "monster",
@@ -34,7 +34,7 @@ mobdict = {
         "attacktrigger": random.randint(1,5)/10,
         "fleetrigger": random.randint(1,5)/10,
         "sprite": "zombie",
-        "loot": list(set([random.choice(monsterloot) for item in range(0,random.randint(0,3))]))
+        "loot": random.choice(monsterloot)
     },
     2: {
         "category": "monster",
@@ -56,13 +56,15 @@ mobdict = {
         "attacktrigger": random.randint(1,5)/10,
         "fleetrigger": random.randint(1,8)/10,
         "sprite": "skeleton",
-        "loot": list(set([random.choice(monsterloot) for item in range(0,random.randint(0,3))]))
+        "loot": random.choice(monsterloot)
     },
     3: {
         "category": "treasure",
         "name": "A Chest",
         "description": """You find a chest full of
-        ...what?""",
+        ...what?
+
+        Press action to open.""",
         "hp": 0,
         "killable": True,
         "aggressive": False,
@@ -70,7 +72,7 @@ mobdict = {
         "attacktrigger": 0,
         "fleetrigger": 0,
         "sprite": "chest",
-        "loot": list(set([random.choice(chestloot) for item in range(0,random.randint(0,3))]))
+        "loot": random.choice(chestloot)
     },
     4: {
         "category": "trap",
@@ -85,7 +87,7 @@ mobdict = {
         "attacktrigger": random.randint(1,5)/10,
         "fleetrigger": 0,
         "sprite": "chest",
-        "loot": []
+        "loot": ""
     }
 
 }

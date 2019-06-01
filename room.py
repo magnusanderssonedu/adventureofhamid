@@ -1,6 +1,7 @@
 from tile import Tile
 from mob import Mob
 from mobdict import mobdict
+from loot import Loot, lootdict
 import random
 
 class Room:
@@ -43,15 +44,23 @@ class Room:
     def setNoMob(self):
         self.hasmob = False
 
-    def getMob(self):
+    def getMob(self, mobChance=1):
         """Get this rooms mob"""
 
 
         # if this room is supposed to have a mob but doesn't yet, find one randomly
         if self.hasmob and not self.mob:
-            mobkey = random.choice(list(mobdict.keys()))
-            mob = mobdict[mobkey]
-            self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], mob['loot'], mob['name'], mob['category'])
+            if random.randint(0,100) < mobChance*100:
+                mobkey = random.choice(list(mobdict.keys()))
+                mob = mobdict[mobkey]
+            else:
+                chanceOfChest = random.choice([0,0,0,0,3]) #one fifth chance to get a Chest.
+                mob = mobdict[chanceOfChest]
+                if chanceOfChest == 0:
+                    self.hasmob = False
+            lootname = lootdict[mob['loot']]
+            loot = Loot(lootname['name'],lootname['description'],lootname['sprite'],lootname['effect'],lootname['inventoryitem'])
+            self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], loot, mob['name'], mob['category'])
         # else if this room is supposed to have a mob and already has one, get that one
         elif self.hasmob and self.mob:
             mob = self.mob
@@ -62,7 +71,7 @@ class Room:
             self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], mob['loot'], mob['name'], mob['category'])
         # print("room->getMob->self.room_mob", self.room_mob)
         return self.room_mob
-    
+
     def getRoomWalls(self):
         """Get this rooms walls"""
         return self.tile_holder[0].getTileWalls()
@@ -96,6 +105,5 @@ class Room:
             valid_move = True
         elif movecoords == (0, -1) and exits['n'] == 1:
             valid_move = True
-        
+
         return valid_move
-    
