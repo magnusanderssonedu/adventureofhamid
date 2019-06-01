@@ -1,6 +1,8 @@
 import pygame
+import os
 from player import Player
 from board import Board
+from status import Status, StatusContent, StatusContentBar, StatusImage
 from status import Status, StatusContent, StatusContentBar, StatusContentImage
 from drawhelper import DrawHelper
 from eventhandler import move, roomAction, hurtPlayer
@@ -35,8 +37,11 @@ theStatusContent = {
     "MobDamage": StatusContent(text="", size=20, coords=(650, 390), bold=False),
     "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 410)),
     "MobAction": StatusContent(text="", size=16, coords=(650, 310)),
+    "Image": StatusImage(image='emptyroom.png', coords=(680, 150))
     "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(720, 50))
 }
+
+
 
 theStatusBars = {
     "HP":   StatusContentBar(color=(230,0,0),bgcolor=(40,40,40),dimensions=(170,20),coords=(645,16))
@@ -59,6 +64,9 @@ splashImages = {
 theSplashScreens = DrawHelper([v for v in splashImages.values()])
 
 gamestate = 0
+pygame.mixer.init()
+pygame.mixer.music.load(os.path.join('data/sounds', 'waterdrops.ogg'))
+pygame.mixer.music.play(-1)
 room_mob = {}
 room_mob_list = []
 while run:  #main loop

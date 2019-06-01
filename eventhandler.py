@@ -1,5 +1,7 @@
+import os
 import pygame
 import random
+import time
 from player import Player
 from board import Board
 from drawhelper import DrawHelper
@@ -24,6 +26,12 @@ def possibleMoves(x,y):
 def hurtPlayer(player, damage):
     #this method is only for testing the HP bar
     player.setHP(player.getHP()-damage)
+    play('male_grunt.ogg')
+
+def play(soundfile):
+    s = pygame.mixer.Sound(os.path.join('data/sounds', soundfile))
+    empty_channel = pygame.mixer.find_channel()
+    empty_channel.play(s)
 
 def move(gamestate, pressed_key, gc):
     room_mob = None
@@ -56,11 +64,22 @@ def move(gamestate, pressed_key, gc):
                 room_mob = gc['board'].enter_room(gc['player'].relcoords(),gc['player'].getMobChance())
                 # room_mob_list.append(room_mob)
                 gc['statuscontent']['Mob'].setText(room_mob.name)
-                if room_mob.category == 'monster' or room_mob.category == 'trap':
+                if room_mob.category == 'monster':
+                    play('zombie1.ogg')
+                    # pygame.mixer.music.load('thunder.ogg')
+                    # pygame.mixer.music.play()
+                    gc['statuscontent']['Image'].setImage("swords_crossing_stone.png")
+                    gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
+                    gc['statuscontent']['MobAttack'].setText("Attack: " + str(room_mob.attacktrigger*100)+"%")
+                    gc['statuscontent']['MobDamage'].setText("Damage: " + str(room_mob.damage))
+                elif room_mob.category == 'trap':
+                    play('arrows.ogg')
+                    gc['statuscontent']['Image'].setImage("arrows.png")
                     gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
                     gc['statuscontent']['MobAttack'].setText("Attack: " + str(room_mob.attacktrigger*100)+"%")
                     gc['statuscontent']['MobDamage'].setText("Damage: " + str(room_mob.damage))
                 else:
+                    gc['statuscontent']['Image'].setImage("emptyroom.png")
                     gc['statuscontent']['MobHP'].setText("")
                     gc['statuscontent']['MobAttack'].setText("")
                     gc['statuscontent']['MobDamage'].setText("")
@@ -91,7 +110,7 @@ def roomAction(gc, room_mob):
     # if mob is a monster when you press enter the player attacks and get attacked back if the mob is still alive
     if room_mob.category == 'monster':
         gc['statuscontent']['MobAction'].setText("You attacked the {}".format(room_mob.name))
-
+        play('jab.ogg')
         damage = random.randint(1,gc['player'].getAttack())
         left = room_mob.hp - damage
 
@@ -101,9 +120,18 @@ def roomAction(gc, room_mob):
             room_mob.setHP(left)
             gc['statuscontent']['MobHP'].setText("HP: " + str(room_mob.hp))
             dice = random.randint(1, 100)
+            
             if dice <= room_mob.attacktrigger*100:
+                time.sleep(0.5)
+                play('chopp.ogg')
+                time.sleep(0.5)
+            else:
+                time.sleep(0.5)
+                play('missed_chopp.ogg')
                 hurtPlayer(gc['player'], room_mob.damage)
         else:
+            time.sleep(0.5)
+            play('zombie_pain.ogg')
             room_mob.setHP(0)
             gc['board'].setNoMob(gc['player'].relcoords())
             gc['statuscontent']['MobHP'].setText("DEAD!")
@@ -112,9 +140,11 @@ def roomAction(gc, room_mob):
             gamestate = 1
     elif room_mob.category == 'treasure':
         print("OPEN TREASURE")
+        time.sleep(0.5)
+        play('open_chest.ogg')
+        gc['board'].setNoMob(gc['player'].relcoords())
         gc['statuscontent']['MobAction'].setText("You got {}".format(room_mob.getLootDescription()))
         gc['player'].addInventory(room_mob.getLoot())
-        gc['board'].setNoMob(gc['player'].relcoords())
     # elif room_mob['category'] == 'trap':
     #     dice = random.randint(1, 100)
     #     print("Nu kommer jag till en fälla")
