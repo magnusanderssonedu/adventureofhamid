@@ -1,17 +1,17 @@
 import random
-chestloot = ["gold", "torch", "healing water", "sword","jewlery", "food", "stone"]
+chestloot = ["gold", "torch", "healing water", "sword","jewlery", "food", "stone", "poison"]
 monsterloot = ["jewlery", "food", "stone", "dagger"]
 mobdict = {
     0: {
         "category": "nothing",
         "name": "Empty room",
         "description": "nothing",
-        "hp": -1,
+        "hp": (0,0),
         "killable": False,
         "aggressive": False,
-        "damage": 0,
-        "attacktrigger": 0,
-        "fleetrigger": 0,
+        "damage": (0,0),
+        "attacktrigger": (0,0),
+        "fleetrigger": (0,0),
         "sprite": "",
         "loot": ""
     },
@@ -27,14 +27,14 @@ mobdict = {
         You will soon enough smell the
         flesh of the zombie. Do not be
         afraid, trust in yourself""",
-        "hp": random.randint(4,10),
+        "hp": (4,10),
         "killable": True,
         "aggressive": True,
-        "damage": random.randint(1,5),
-        "attacktrigger": random.randint(1,5)/10,
-        "fleetrigger": random.randint(1,5)/10,
+        "damage": (1,5),
+        "attacktrigger": (1,5),
+        "fleetrigger": (1,5),
         "sprite": "zombie",
-        "loot": random.choice(monsterloot)
+        "loot": monsterloot
     },
     2: {
         "category": "monster",
@@ -49,14 +49,14 @@ mobdict = {
         the skull with a sharp knife in it.
         - Are you brave enough
         to fight it?""",
-        "hp": random.randint(2,5),
+        "hp": (2,5),
         "killable": True,
         "aggressive": True,
-        'damage': random.randint(1,5),
-        "attacktrigger": random.randint(1,5)/10,
-        "fleetrigger": random.randint(1,8)/10,
+        'damage': (1,5),
+        "attacktrigger": (1,5),
+        "fleetrigger": (1,8),
         "sprite": "skeleton",
-        "loot": random.choice(monsterloot)
+        "loot": monsterloot
     },
     3: {
         "category": "treasure",
@@ -65,14 +65,14 @@ mobdict = {
         ...what?
 
         Press action to open.""",
-        "hp": 0,
+        "hp": (0,0),
         "killable": True,
         "aggressive": False,
-        "damage": 0,
-        "attacktrigger": 0,
-        "fleetrigger": 0,
+        "damage": (0,0),
+        "attacktrigger": (0,0),
+        "fleetrigger": (0,0),
         "sprite": "chest",
-        "loot": random.choice(chestloot)
+        "loot": chestloot
     },
     4: {
         "category": "trap",
@@ -80,12 +80,12 @@ mobdict = {
         "description": """When you step into the room
         arrows shoots out from small
         holes in the wall!""",
-        "hp": 0,
+        "hp": (0,0),
         "killable": True,
         "aggressive": True,
-        "damage": random.randint(1,10),
-        "attacktrigger": random.randint(1,5)/10,
-        "fleetrigger": 0,
+        "damage": (1,10),
+        "attacktrigger": (1,5),
+        "fleetrigger": (0,0),
         "sprite": "chest",
         "loot": ""
     }

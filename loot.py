@@ -103,6 +103,13 @@ lootdict = {
         "effect":("hp",random.randint(5,15)),
         "inventoryitem": False
     },
+    "poison": {
+        "name": "some poison",
+        "description":"some poison!",
+        "sprite":"",
+        "effect":("hp",-random.randint(5,15)),
+        "inventoryitem": False
+    },
     "stone": {
         "name": "A sharp stone",
         "description":"a sharp stone!",

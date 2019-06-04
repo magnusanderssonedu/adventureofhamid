@@ -56,9 +56,23 @@ class Room:
                 mob = mobdict[chanceOfChest]
                 if chanceOfChest == 0:
                     self.hasmob = False
-            lootname = lootdict[mob['loot']]
+            
+            print("mob['loot']:", mob['loot'])
+            print("mob['damage']:", mob['damage'])
+            print("mob['attacktrigger']:", mob['attacktrigger'])
+            print("mob['fleetrigger']:", mob['fleetrigger'])
+            try:
+                lootname = lootdict[random.choice(mob['loot'])] # changed from lootdict[mob['loot']]
+            except:
+                lootname = lootdict[mob['loot']]
+            
             loot = Loot(lootname['name'],lootname['description'],lootname['sprite'],lootname['effect'],lootname['inventoryitem'])
-            self.room_mob = Mob(mob['hp'],mob['killable'],mob['description'],mob['aggressive'],mob['damage'],mob['attacktrigger'], mob['fleetrigger'], loot, mob['name'], mob['category'])
+            
+            mob_hp = random.randint(mob['hp'][0], mob['hp'][1])
+            mob_damage = random.randint(mob['damage'][0], mob['damage'][1])
+            mob_attacktrigger = random.randint(mob['attacktrigger'][0], mob['attacktrigger'][1])/10
+            mob_fleetrigger = random.randint(mob['fleetrigger'][0], mob['fleetrigger'][1])/10
+            self.room_mob = Mob(mob_hp ,mob['killable'],mob['description'],mob['aggressive'],mob_damage, mob_attacktrigger, mob_fleetrigger, loot, mob['name'], mob['category'])
         # else if this room is supposed to have a mob and already has one, get that one
         elif self.hasmob and self.mob:
             mob = self.mob
