@@ -65,7 +65,7 @@ lootdict = {
         "name": "Gold",
         "description":"a pot of gold!",
         "sprite":"gold",
-        "effect":("",0),
+        "effect":("treasure",random.randint(150,300)),
         "inventoryitem": True
     },
     "torch": {
@@ -93,7 +93,7 @@ lootdict = {
         "name": "Jewlery",
         "description":"some jewlery!",
         "sprite":"jewlery",
-        "effect":("",0),
+        "effect":("treasure",random.randint(50,500)),
         "inventoryitem": True
     },
     "food": {
