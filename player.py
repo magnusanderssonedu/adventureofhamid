@@ -85,6 +85,15 @@ class Player:
             if item.effect[0] == "less mobs" and item.effect[1] < effect:
                 effect = item.effect[1]
         return effect
+    
+    def getTreasure(self):
+        gold = 0
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                if item.effect[0] == 'treasure':
+                    gold = gold + item.effect[1]
+        
+        return gold
 
     def reset(self):
         self.relx = 0

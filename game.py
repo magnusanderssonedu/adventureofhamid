@@ -28,7 +28,8 @@ redraw = True   #boolean to minimize number of Blits
 theStatusContent = {
     "HP":   StatusContent(text="HP 100", size=24, coords=(650,20)),
     "Attack":   StatusContent(text="Atk 1", size=24, coords=(720,20)),
-    "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,50)),
+    # "Coords":   StatusContent(text="(0,0)", color=(44,44,44), size=24, coords=(650,50)),
+    "Gold":   StatusContent(text="Gold: 0", size=24, coords=(650,50)),
     "PossibleMoves": StatusContent(text="Moves(u,d,l,r): (-,3,-,2)", size=24, coords=(650, 70)),
     "Mob": StatusContent(text="Empty room", size=24, coords=(650, 450), bold=True),
     "MobHP": StatusContent(text="", size=20, coords=(650, 470), bold=False),
@@ -37,7 +38,7 @@ theStatusContent = {
     # "MobDesc": StatusContent(text="Nothing", size=16, coords=(650, 430)),
     "MobAction": StatusContent(text="", size=16, coords=(650, 415)),
     "Image": StatusImage(image='emptyroom.png', coords=(680, 310)),
-    "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(720, 50))
+    # "Gamestate": StatusContent(text="Gamestate: 1", size=16, coords=(720, 50))
 }
 
 
@@ -112,14 +113,17 @@ while run:  #main loop
             else:
                 if gamestate in [1,2]:
                     pressed_key = id_keys() # value between -1-5 where value 0-5 means valid key for move
-                    gamecomponents, rb, redraw, gs = move(gamestate, pressed_key, gamecomponents)
-                    room_mob = rb
-                    gamestate = gs
+                    try:
+                        gamecomponents, rb, redraw, gs = move(gamestate, pressed_key, gamecomponents)
+                        room_mob = rb
+                        gamestate = gs
+                    except Exception as e:
+                        print(e)
 
     if thePlayer.getHP() == 0 and gamestate in [1,2]:  #if player gets to 0 HP its Game Over
         gamestate = -1
 
-    theStatusContent['Gamestate'].setText("Gamestate: {}".format(gamestate))
+    # theStatusContent['Gamestate'].setText("Gamestate: {}".format(gamestate))
 
     if gamestate == 0:      #Opening Splash
         theSplashScreens.drawOne(win,2)

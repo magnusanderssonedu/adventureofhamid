@@ -59,7 +59,7 @@ def move(gamestate, pressed_key, gc):
                     print("Error", e)
 
                 gc['player'].move(move)
-                gc['statuscontent']["Coords"].setText("({},{})".format(gc['player'].relcoords()[0],gc['player'].relcoords()[1]))
+                # gc['statuscontent']["Coords"].setText("({},{})".format(gc['player'].relcoords()[0],gc['player'].relcoords()[1]))
                 gc['board'].set_current_tile(pressed_key)
                 room_mob = gc['board'].enter_room(gc['player'].relcoords(),gc['player'].getMobChance())
                 # room_mob_list.append(room_mob)
@@ -152,4 +152,5 @@ def roomAction(gc, room_mob):
     #         hurtPlayer(gc['statusbar'], gc['statuscontent'], gc['player'], room_mob.damage)
     #         print("Jag blev visst skadad")
     gc['statuscontent']['Attack'].setText("Atk {}".format(gc['player'].getAttack()))
+    gc['statuscontent']['Gold'].setText("Gold: {}".format(gc['player'].getTreasure()))
     return gc, room_mob, gamestate
