@@ -38,6 +38,27 @@ mobdict = {
     },
     2: {
         "category": "monster",
+        "name": "Troll",
+        "description": """Welcome to the death room,
+        the Zombie is here. He has
+        been here for a long time,
+        nobody knows how long
+        because nobody has never
+        come out of this room alive.
+        You will soon enough smell the
+        flesh of the zombie. Do not be
+        afraid, trust in yourself""",
+        "hp": (10,20),
+        "killable": True,
+        "aggressive": True,
+        "damage": (5,15),
+        "attacktrigger": (1,3),
+        "fleetrigger": (1,3),
+        "sprite": "troll",
+        "loot": monsterloot
+    },
+    3: {
+        "category": "monster",
         "name": "Skeleton",
         "description": """You can hear the sound of
         bone hitting the ground. It is
@@ -58,7 +79,7 @@ mobdict = {
         "sprite": "skeleton",
         "loot": monsterloot
     },
-    3: {
+    4: {
         "category": "treasure",
         "name": "A Chest",
         "description": """You find a chest full of
@@ -74,7 +95,7 @@ mobdict = {
         "sprite": "chest",
         "loot": chestloot
     },
-    4: {
+    5: {
         "category": "trap",
         "name": "Arrows from wall",
         "description": """When you step into the room
@@ -88,6 +109,27 @@ mobdict = {
         "fleetrigger": (0,0),
         "sprite": "chest",
         "loot": ""
-    }
+    },
+    6: {
+        "category": "monster",
+        "name": "Goblin",
+        "description": """Welcome to the death room,
+        the Zombie is here. He has
+        been here for a long time,
+        nobody knows how long
+        because nobody has never
+        come out of this room alive.
+        You will soon enough smell the
+        flesh of the zombie. Do not be
+        afraid, trust in yourself""",
+        "hp": (1,3),
+        "killable": True,
+        "aggressive": True,
+        "damage": (1,3),
+        "attacktrigger": (1,6),
+        "fleetrigger": (1,3),
+        "sprite": "troll",
+        "loot": monsterloot
+    },
 
 }
